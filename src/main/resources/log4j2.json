@@ -1,0 +1,42 @@
+{
+  "configuration": {
+    "status": "error",
+    "name": "hangman",
+    "packages": "org.apache.logging.log4j.test",
+    "properties": {
+      "property": {
+        "name": "filename",
+        "value": "target/rolling1/rollingtest-$${sd:type}.log"
+      }
+    },
+    "ThresholdFilter": {
+      "level": "debug"
+    },
+    "appenders": {
+      "appender": [ {
+          "type": "Console",
+          "name": "STDOUT",
+          "PatternLayout": {
+          	// used slow but verbose %M method name
+            "pattern": "%d{yyyy-MM-dd HH:mm:ss.SSS}[%level{WARN=W, DEBUG=D, ERROR=ERROR, TRACE=T, INFO=I}] %c{3}.%M: %m%n"
+          }
+        } ]
+    },
+    "loggers": {
+      "logger": [
+        {
+          "name": "hangman",
+          "level": "debug",
+          "additivity": "false",
+          "AppenderRef": { "ref": "STDOUT" }
+        }
+      ],
+      "root": {
+        "level": "error",
+        "AppenderRef": {
+          "ref": "STDOUT"
+        }
+      }
+    }
+  }
+}
