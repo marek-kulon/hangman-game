@@ -1,38 +1,39 @@
 package hangman.web.browser;
 
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import hangman.core.Game;
 import hangman.core.guess.Guess;
 import hangman.core.state.GuessAlreadyMadeException;
 import hangman.util.JsonConverter;
 import hangman.web.browser.dto.GameDtoRequest;
 import hangman.web.browser.dto.GameDtoResponse;
+import hangman.web.common.response.ResponseMessage;
 import hangman.web.common.response.ResponseMessages;
-import hangman.web.util.ControllerUtils;
 
 import java.io.IOException;
 
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 
  * @author Marek Kulon
  *
  */
-@WebServlet("/browser/guess")
-public class BrowserGuessController extends HttpServlet {
+
+@Controller
+public class BrowserGuessController {
 	
-	private static final long serialVersionUID = 2181968587693124160L;
 	private static final Logger log = LoggerFactory.getLogger(BrowserGuessController.class);
 	
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+	@RequestMapping(value="/browser/guess", method=POST)
+	protected @ResponseBody ResponseMessage<?> doPost(HttpServletRequest req, HttpServletResponse res) {
 		log.debug("received: {}", req.getParameterMap());
 		
 		final GameDtoRequest gameDto = parseGameDtoOrNull(req.getParameter("state"));
@@ -40,14 +41,12 @@ public class BrowserGuessController extends HttpServlet {
 		
 		if(gameDto==null || guess==null) {
 			log.info("illegal arguments recived: {}", req.getParameterMap());
-			ControllerUtils.sendJson(ResponseMessages.newFailureMessage("ILLEGAL-ARGUMENTS"), res);
-			return;
+			return ResponseMessages.newFailureMessage("ILLEGAL-ARGUMENTS");
 		}
 		
 		if(gameDto.isCorrupted()) {
 			log.info("corrupted data: {}", req.getParameterMap());
-			ControllerUtils.sendJson(ResponseMessages.newFailureMessage("CORRUPTED-DATA"), res);
-			return;
+			return ResponseMessages.newFailureMessage("CORRUPTED-DATA");
 		}
 		
 		final Game game = Game.restore(gameDto.getGameState());
@@ -56,10 +55,9 @@ public class BrowserGuessController extends HttpServlet {
 			boolean isCorrect = game.doGuess(guess);
 			log.debug("isCorrect: {}", isCorrect);
 		} catch (GuessAlreadyMadeException e) {
-			ControllerUtils.sendJson(ResponseMessages.newFailureMessage("ALREADY-GUESSED"), res);
-			return;
+			return ResponseMessages.newFailureMessage("ALREADY-GUESSED");
 		}
-		ControllerUtils.sendJson(ResponseMessages.newSuccessMessage(new GameDtoResponse(game)), res);
+		return ResponseMessages.newSuccessMessage(new GameDtoResponse(game));
 	}
 	
 	private GameDtoRequest parseGameDtoOrNull(String value) {

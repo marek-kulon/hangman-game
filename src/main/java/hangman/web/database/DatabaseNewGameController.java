@@ -1,23 +1,24 @@
 package hangman.web.database;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import hangman.config.GameStateConfig;
 import hangman.core.Game;
 import hangman.core.secret.Secret;
 import hangman.core.secret.SecretGenerator;
 import hangman.core.state.repository.util.TokenGenerator;
+import hangman.web.common.response.ResponseMessage;
 import hangman.web.common.response.ResponseMessages;
 import hangman.web.database.dto.GameDtoResponse;
-import hangman.web.util.ControllerUtils;
 
-import java.io.IOException;
-
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 
@@ -25,24 +26,21 @@ import org.slf4j.LoggerFactory;
  *
  */
 
-@WebServlet("/database/new-game")
-public class DatabaseNewGameController extends HttpServlet {
+@Controller
+public class DatabaseNewGameController {
 	
-	private static final long serialVersionUID = 4477168749778182378L;
 	private static final Logger log = LoggerFactory.getLogger(DatabaseNewGameController.class);
 	
-	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+	@RequestMapping(value="/database/new-game", method=GET)
+	protected @ResponseBody ResponseMessage<?> doGet(HttpServletRequest req, HttpServletResponse res) {
 		log.debug("received: {}", req.getParameterMap());
 
 		final Integer maxIncorrectGuessesNo = parseOrNull(req.getParameter("maxIncorrectGuessesNo"));
-		final Secret.Category category = Secret.Category.findByNameIgnoreCase(req.getParameter("category"));
+		final Secret.Category category = Secret.Category.findByNameIgnoreCase(StringUtils.defaultString(req.getParameter("category")));
 		
 		if(maxIncorrectGuessesNo==null || maxIncorrectGuessesNo<0 || category==null) {
 			log.info("illegal arguments recived: {}", req.getParameterMap());
-			ControllerUtils.sendJson(ResponseMessages.newFailureMessage("ILLEGAL-ARGUMENTS"), res);
-			return;
+			return ResponseMessages.newFailureMessage("ILLEGAL-ARGUMENTS");
 		}
 		
 		Secret newSecret = SecretGenerator.generate(category);
@@ -55,7 +53,7 @@ public class DatabaseNewGameController extends HttpServlet {
 		
 		GameStateConfig.getGameStateRepository().saveOrUpdate(token, newGame.getGameState());
 		
-		ControllerUtils.sendJson(ResponseMessages.newSuccessMessage(new GameDtoResponse(token, newGame)), res);
+		return ResponseMessages.newSuccessMessage(new GameDtoResponse(token, newGame));
 	}
 	
 	

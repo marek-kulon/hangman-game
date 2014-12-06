@@ -1,29 +1,24 @@
 package hangman.web.database;
 
-import hangman.web.util.ControllerUtils;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.HEAD;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * 
  * @author Marek Kulon
  *
  */
-@WebServlet(urlPatterns = { "/database" })
-public class DatabaseHomeController extends HttpServlet {
+@Controller
+public class DatabaseHomeController {
 	
-	private static final long serialVersionUID = 7492312687092254837L;
-
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse res)
-			throws IOException, ServletException {
-		
-		ControllerUtils.sendJsp("/pages/hangman-database.jsp", req, res);
+	@RequestMapping(value="/database", method={GET, HEAD})
+	protected String doGet(HttpServletRequest req, HttpServletResponse res) {
+		return "database";
 	}
 }
