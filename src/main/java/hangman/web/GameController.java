@@ -91,7 +91,7 @@ public class GameController {
 		log.debug("received, token: {}, value: {}", token, value);
 		
 		// create guess value
-		final Guess guess = value!=null && value.length()==1 && Guess.isValidGuessCharacter(value.charAt(0)) ?  //FIXME
+		final Guess guess = value!=null && value.length()==1 && Guess.isValidGuessCharacter(value.charAt(0)) ?
 				Guess.newFor(value.charAt(0)) : 
 					null;
 				
