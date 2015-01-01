@@ -30,13 +30,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *
  */
 
-// TODO - USE org.springframework.http.ResponseEntity
 @Controller
+@RequestMapping("/game")
 public class GameController {
 	
 	private static final Logger log = LoggerFactory.getLogger(GameController.class);
 	
-	@RequestMapping(value = "/database/new-game/{category}/{maxIncorrectGuessesNo}", method = GET)
+	// TODO - USE org.springframework.http.ResponseEntity instead of ResponseMessage
+	
+	@RequestMapping(value = "/new-game/{category}/{maxIncorrectGuessesNo}", method = GET)
 	protected @ResponseBody ResponseMessage<?> newGame(
 			@PathVariable("category") String categoryName,
 			@PathVariable("maxIncorrectGuessesNo") Integer maxIncorrectGuessesNo) {
@@ -66,7 +68,7 @@ public class GameController {
 	}
 	
 	
-	@RequestMapping(value="/database/load/{token}", method=GET)
+	@RequestMapping(value="/load/{token}", method=GET)
 	protected @ResponseBody ResponseMessage<?> load(@PathVariable("token") String token) {
 		log.debug("received: {}", token);
 		
@@ -79,7 +81,7 @@ public class GameController {
 	}
 	
 	
-	@RequestMapping(value="/database/guess/{token}/{value}", method=POST) //FIXME - MAKE POST
+	@RequestMapping(value="/guess/{token}/{value}", method=POST) //FIXME - MAKE POST
 	protected @ResponseBody ResponseMessage<?> guess(@PathVariable("token") String token, @PathVariable("value") String value) {
 		log.debug("received, token: {}, value: {}", token, value);
 		
