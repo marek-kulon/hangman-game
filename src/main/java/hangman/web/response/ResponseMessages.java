@@ -1,6 +1,6 @@
-package hangman.web.common.response;
+package hangman.web.response;
 
-import static hangman.web.common.response.ResponseMessage.Status;
+import static hangman.web.response.ResponseMessage.Status;
 
 
 public class ResponseMessages {

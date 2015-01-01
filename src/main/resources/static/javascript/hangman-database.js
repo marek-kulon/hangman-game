@@ -91,18 +91,16 @@ hangman = (function($) {
 		}
 		
 		ajaxRequest = hangmanUtils.requestServer(
-			window.ctx+'/database/guess',		// url
-			{									// data
-				token: token,
-				guess: value
-			},
-			{									// callbacks
+			window.ctx+'/database/guess/'+token+'/'+value, 	// url
+			{}, 											// data
+			{												// callbacks
 				before: callbacks.before,
 				success: commonSuccessCallback(callbacks.success, callbacks.failure),
 				failure: callbacks.failure,
 				after: callbacks.after
 			},
-			Lock								// Lock
+			Lock,											// Lock
+			{type: 'POST'}									// settings
 		);
 		return true;
 	};
@@ -135,19 +133,16 @@ hangman = (function($) {
 		}
 		
 		ajaxRequest = hangmanUtils.requestServer(
-			window.ctx+'/database/new-game', 	// url
-			{ 									// data
-				maxIncorrectGuessesNo: maxIncorrectGuessesNo,
-				category: category
-			},
-			{									// callbacks
+			window.ctx+'/database/new-game/'+category+'/'+maxIncorrectGuessesNo, 	// url
+			{},																		// data
+			{																		// callbacks
 				before: callbacks.before,
 				success: commonSuccessCallback(callbacks.success, callbacks.failure),
 				failure: callbacks.failure,
 				after: callbacks.after
 			},
-			Lock,								// Lock
-			{ timeout: 5000 }					// settings
+			Lock,																	// Lock
+			{ timeout: 5000 }														// settings
 		);
 		return true;
 	};
@@ -167,8 +162,8 @@ hangman = (function($) {
 		if (!callbacks || !$.isFunction(callbacks.success)) throw new Error('illlegal argument');
 		
 		ajaxRequest = hangmanUtils.requestServer(
-			window.ctx+'/database/load',		// url
-			{ token: token },					// data
+			window.ctx+'/database/load/'+token,	// url
+			{},									// data
 			{									// callbacks
 				before: callbacks.before,
 				success: commonSuccessCallback(callbacks.success, callbacks.failure),

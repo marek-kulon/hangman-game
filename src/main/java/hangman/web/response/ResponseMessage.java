@@ -1,4 +1,4 @@
-package hangman.web.common.response;
+package hangman.web.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

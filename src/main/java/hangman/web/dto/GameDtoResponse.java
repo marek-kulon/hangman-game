@@ -1,4 +1,4 @@
-package hangman.web.database.dto;
+package hangman.web.dto;
 
 import hangman.core.Game;
 import hangman.core.GameStatus;
