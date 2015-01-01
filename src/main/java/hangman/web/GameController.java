@@ -2,7 +2,6 @@ package hangman.web;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.HEAD;
 import hangman.config.GameStateConfig;
 import hangman.core.Game;
 import hangman.core.guess.Guess;
@@ -36,12 +35,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class GameController {
 	
 	private static final Logger log = LoggerFactory.getLogger(GameController.class);
-	
-	@RequestMapping(value="/database", method={GET, HEAD})
-	protected String index() {
-		return "database";
-	}
-	
 	
 	@RequestMapping(value = "/database/new-game/{category}/{maxIncorrectGuessesNo}", method = GET)
 	protected @ResponseBody ResponseMessage<?> newGame(
