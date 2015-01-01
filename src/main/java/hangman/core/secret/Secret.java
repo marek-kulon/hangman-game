@@ -85,10 +85,7 @@ public final class Secret implements Serializable {
 		return result;
 	}
 
-	/*
-	 * equalsIgnoreCase -> it takes the same lower & upper case letters to know the secret so
-	 * it doesn't matter
-	 */
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) { return true; }
@@ -102,7 +99,7 @@ public final class Secret implements Serializable {
 		}
 		if (value == null) {
 			if (other.value != null) { return false; }
-		} else if (!value.equalsIgnoreCase(other.value)) { 
+		} else if (!value.equals(other.value)) {
 			return false;
 		}
 			
