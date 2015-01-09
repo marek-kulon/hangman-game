@@ -17,32 +17,32 @@ public class GuessTest {
 
 	@Test(expected=NullPointerException.class)
 	public void isCorrectForNullTest() {
-		assertTrue(Guess.newFor('a').isCorrectFor(null));
+		assertTrue(Guess.newGuess('a').isCorrectFor(null));
 	}
 	
 	@Test
 	public void isCorrectForLowerUpperTest() {
-		assertTrue(Guess.newFor('a').isCorrectFor(Secret.newSecret("ALBATROSS", Category.ANIMALS)));
+		assertTrue(Guess.newGuess('a').isCorrectFor(Secret.newSecret("ALBATROSS", Category.ANIMALS)));
 	}
 	
 	@Test
 	public void isCorrectForUpperLowerTest() {
-		assertTrue(Guess.newFor('A').isCorrectFor(Secret.newSecret("albatross", Category.ANIMALS)));
+		assertTrue(Guess.newGuess('A').isCorrectFor(Secret.newSecret("albatross", Category.ANIMALS)));
 	}
 	
 	@Test
 	public void isCorrectForLowerLowerTest() {
-		assertTrue(Guess.newFor('a').isCorrectFor(Secret.newSecret("albatross", Category.ANIMALS)));
+		assertTrue(Guess.newGuess('a').isCorrectFor(Secret.newSecret("albatross", Category.ANIMALS)));
 	}
 	
 	@Test
 	public void isCorrectForUpperUpperTest() {
-		assertTrue(Guess.newFor('A').isCorrectFor(Secret.newSecret("ALBATROSS", Category.ANIMALS)));
+		assertTrue(Guess.newGuess('A').isCorrectFor(Secret.newSecret("ALBATROSS", Category.ANIMALS)));
 	}
 	
 	@Test
 	public void isCorrectForIcorrectGuessTest() {
-		assertFalse(Guess.newFor('z').isCorrectFor(Secret.newSecret("Albatross", Category.ANIMALS)));
+		assertFalse(Guess.newGuess('z').isCorrectFor(Secret.newSecret("Albatross", Category.ANIMALS)));
 	}
 	
 	/*
@@ -80,10 +80,10 @@ public class GuessTest {
 	
 	@Test
 	public void equalsAndHashCodeTest() {
-		final Guess gaOne = Guess.newFor('a');
-		final Guess gaTwo = Guess.newFor('a');
-		final Guess gaThree = Guess.newFor('a');
-		final Guess gAOne = Guess.newFor('A');
+		final Guess gaOne = Guess.newGuess('a');
+		final Guess gaTwo = Guess.newGuess('a');
+		final Guess gaThree = Guess.newGuess('a');
+		final Guess gAOne = Guess.newGuess('A');
 		
 		// equals
 		assertFalse("equals: null", gaOne.equals(null));
@@ -92,13 +92,13 @@ public class GuessTest {
 		assertTrue("equals: is transitive", gaOne.equals(gaTwo) && gaTwo.equals(gaThree) && gaOne.equals(gaThree));
 		assertTrue("equals: is consistent", gaOne.equals(gaTwo) && gaOne.equals(gaTwo));
 		
-		final Guess gzOne = Guess.newFor('z');
+		final Guess gzOne = Guess.newGuess('z');
 		
 		assertFalse("equals: not equal", gaOne.equals(gzOne));
 		assertTrue("equals: lower & upper cases", gaOne.equals(gAOne) && gAOne.equals(gaOne));
 		
 		// hashCode
-		assertEquals(gaOne, gAOne);
+		assertEquals(gaOne.hashCode(), gAOne.hashCode());
 	}
 	
 	/*
@@ -107,22 +107,22 @@ public class GuessTest {
 	
 	@Test
 	public void compareTest() {
-		assertTrue(Guess.newFor('b').compareTo(Guess.newFor('a')) > 0);
-		assertTrue(Guess.newFor('b').compareTo(Guess.newFor('A')) > 0);
-		assertTrue(Guess.newFor('B').compareTo(Guess.newFor('a')) > 0);
-		assertTrue(Guess.newFor('B').compareTo(Guess.newFor('A')) > 0);
+		assertTrue(Guess.newGuess('b').compareTo(Guess.newGuess('a')) > 0);
+		assertTrue(Guess.newGuess('b').compareTo(Guess.newGuess('A')) > 0);
+		assertTrue(Guess.newGuess('B').compareTo(Guess.newGuess('a')) > 0);
+		assertTrue(Guess.newGuess('B').compareTo(Guess.newGuess('A')) > 0);
 		
-		assertEquals(0, Guess.newFor('a').compareTo(Guess.newFor('a')));
-		assertEquals(0, Guess.newFor('a').compareTo(Guess.newFor('A')));
-		assertEquals(0, Guess.newFor('A').compareTo(Guess.newFor('A')));
-		assertEquals(0, Guess.newFor('A').compareTo(Guess.newFor('a')));
+		assertEquals(0, Guess.newGuess('a').compareTo(Guess.newGuess('a')));
+		assertEquals(0, Guess.newGuess('a').compareTo(Guess.newGuess('A')));
+		assertEquals(0, Guess.newGuess('A').compareTo(Guess.newGuess('A')));
+		assertEquals(0, Guess.newGuess('A').compareTo(Guess.newGuess('a')));
 		
-		assertTrue(Guess.newFor('a').compareTo(Guess.newFor('b')) < 0);
-		assertTrue(Guess.newFor('a').compareTo(Guess.newFor('B')) < 0);
-		assertTrue(Guess.newFor('A').compareTo(Guess.newFor('b')) < 0);
-		assertTrue(Guess.newFor('A').compareTo(Guess.newFor('B')) < 0);
+		assertTrue(Guess.newGuess('a').compareTo(Guess.newGuess('b')) < 0);
+		assertTrue(Guess.newGuess('a').compareTo(Guess.newGuess('B')) < 0);
+		assertTrue(Guess.newGuess('A').compareTo(Guess.newGuess('b')) < 0);
+		assertTrue(Guess.newGuess('A').compareTo(Guess.newGuess('B')) < 0);
 		
-		assertTrue(Guess.newFor('A').compareTo(null) > 0);
-		assertTrue(Guess.newFor('a').compareTo(null) > 0);
+		assertTrue(Guess.newGuess('A').compareTo(null) > 0);
+		assertTrue(Guess.newGuess('a').compareTo(null) > 0);
 	}
 }

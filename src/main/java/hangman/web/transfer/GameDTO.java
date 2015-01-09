@@ -1,4 +1,4 @@
-package hangman.web.dto;
+package hangman.web.transfer;
 
 import hangman.core.Game;
 import hangman.core.GameStatus;
@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * DTO definition of response
+ * Game Data Transfer Object
  * Contains:
  * - game state
  * - guess word
@@ -22,26 +22,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Marek Kulon
  *
  */
-public class GameDtoResponse {
+public class GameDTO {
 	
-	private String token;
 	private Game game;
 	
-	public GameDtoResponse(String token, Game game) {
-		this.token = token;
+	public GameDTO(Game game) {
 		this.game = game;
 	}
 
 	@JsonProperty("state")
 	public GameStateDto getGameState() {
 		return new GameStateDto(game.getGameState());
-	}
-	
-	
-	// load uses it so it's also here for other operations
-	@JsonProperty("token")
-	public String getToken() {
-		return token;
 	}
 	
 	@JsonProperty("guessedValue")
@@ -112,10 +103,9 @@ public class GameDtoResponse {
 			
 			@JsonCreator
 			public GuessDto(@JsonProperty("value") char value) {
-				this.guess = Guess.newFor(value);
+				this.guess = Guess.newGuess(value);
 			}
 		}
-
 	}
 	
 }

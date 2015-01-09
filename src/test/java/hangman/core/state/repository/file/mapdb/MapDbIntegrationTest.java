@@ -35,7 +35,7 @@ public class MapDbIntegrationTest {
 		file = FileUtils.getFileByPath(path);
 		
 		Set<Guess> guesses = new HashSet<>();
-		guesses.add(Guess.newFor('a'));
+		guesses.add(Guess.newGuess('a'));
 		
 		gs1 = GameState.newGameState(2, Secret.newSecret("dog", Category.ANIMALS), guesses);
 		gs2 = GameState.newGameState(2, Secret.newSecret("orange", Category.FRUITS), guesses);

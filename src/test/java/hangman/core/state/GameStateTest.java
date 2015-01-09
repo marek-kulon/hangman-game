@@ -11,14 +11,14 @@ import org.junit.Test;
 
 public class GameStateTest {
 	
-	private final Guess ga = Guess.newFor('a');
-	private final Guess gb = Guess.newFor('b');
+	private final Guess ga = Guess.newGuess('a');
+	private final Guess gb = Guess.newGuess('b');
 	
 	private GameState gsNew;
 	private GameState gsWithGuess;
 	
 	@Before
-	public void setUp() throws GuessAlreadyMadeException {
+	public void setUp() {
 		gsNew = GameState.newGameState(10, Secret.newSecret("dog", Category.ANIMALS), new HashSet<Guess>());
 		gsWithGuess = GameState.newGameStateWithGuess(gsNew, ga);
 	}

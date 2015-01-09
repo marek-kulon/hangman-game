@@ -33,28 +33,28 @@ public class GameStateRepositoryMapDbFile implements GameStateRepository {
 	
 	
 	@Override
-	public GameState find(String token) {
-		Validate.notNull(token);
+	public GameState find(String gameId) {
+		Validate.notNull(gameId);
 		
-		GameState gameState = map.get(token);
+		GameState gameState = map.get(gameId);
 		
 		return gameState;
 	}
 
 	@Override
-	public void saveOrUpdate(String token, GameState value) {
-		Validate.notNull(token);
+	public void saveOrUpdate(String gameId, GameState value) {
+		Validate.notNull(gameId);
 		Validate.notNull(value);
 		
-		map.put(token, value);
+		map.put(gameId, value);
 		db.commit();
 	}
 
 	@Override
-	public void remove(String token) {
-		Validate.notNull(token);
+	public void remove(String gameId) {
+		Validate.notNull(gameId);
 		
-		map.remove(token);
+		map.remove(gameId);
 		db.commit();
 	}
 	

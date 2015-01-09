@@ -14,7 +14,6 @@ public class SecretTest {
 	 */
 	@Test
 	public void getGuessesToKnowMeNoTest() {
-		
 		assertEquals(3, Secret.newSecret("dog", Category.ANIMALS).getGuessesToKnowMeNo());
 		assertEquals(2, Secret.newSecret("doo", Category.ANIMALS).getGuessesToKnowMeNo());
 		assertEquals(2, Secret.newSecret("doO", Category.ANIMALS).getGuessesToKnowMeNo());
@@ -38,18 +37,14 @@ public class SecretTest {
 		assertTrue("equals: is transitive", sdOne.equals(scTwo) && scTwo.equals(sdThree) && sdOne.equals(sdThree));
 		assertTrue("equals: is consistent", sdOne.equals(scTwo) && sdOne.equals(scTwo));
 		
-		final Secret sDOne = Secret.newSecret("Dog", Category.ANIMALS);
 		final Secret scOne = Secret.newSecret("cat", Category.ANIMALS);
 		final Secret scVTwo = Secret.newSecret("cat", Category.VEGETABLES);
 		
 		assertFalse("equals: not equal", sdOne.equals(scOne));
 		assertFalse("equals: not equal", scOne.equals(scVTwo));
-		assertTrue("equals: lower & upper cases", sdOne.equals(sDOne) && sDOne.equals(sdOne));
 		
 		// hashCode
-		assertEquals(sdOne, sDOne);
+		assertEquals(sdOne.hashCode(), sdThree.hashCode());
 	}
-	
-	
 
 }

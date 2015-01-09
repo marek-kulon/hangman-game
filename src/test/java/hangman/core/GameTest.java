@@ -23,33 +23,33 @@ public class GameTest {
 
 	@Test
 	public void doGuessLowerTest() throws GuessAlreadyMadeException {
-		assertTrue("lower", game.doGuess(Guess.newFor('d')));
+		assertTrue("lower", game.doGuess(Guess.newGuess('d')));
 	}
 	
 	
 	@Test
 	public void doGuessUpperTest() throws GuessAlreadyMadeException {
-		assertTrue(game.doGuess(Guess.newFor('O')));
+		assertTrue(game.doGuess(Guess.newGuess('O')));
 	}
 	
 	@Test
 	public void doGuessWrongTest() throws GuessAlreadyMadeException {
-		assertFalse("wrong", game.doGuess(Guess.newFor('z')));
+		assertFalse("wrong", game.doGuess(Guess.newGuess('z')));
 	}
 	
 	@Test
 	public void doGuessAlreadyWonTest() throws GuessAlreadyMadeException {
-		game.doGuess(Guess.newFor('d'));
-		game.doGuess(Guess.newFor('o'));
-		game.doGuess(Guess.newFor('g'));
-		assertFalse("won -> false", game.doGuess(Guess.newFor('d')));
+		game.doGuess(Guess.newGuess('d'));
+		game.doGuess(Guess.newGuess('o'));
+		game.doGuess(Guess.newGuess('g'));
+		assertFalse("won -> false", game.doGuess(Guess.newGuess('d')));
 	}
 	
 	@Test
 	public void doGuessAlreadyLostTest() throws GuessAlreadyMadeException {
-		game.doGuess(Guess.newFor('X'));
-		game.doGuess(Guess.newFor('Y'));
-		assertFalse("lost -> false", game.doGuess(Guess.newFor('d')));
+		game.doGuess(Guess.newGuess('X'));
+		game.doGuess(Guess.newGuess('Y'));
+		assertFalse("lost -> false", game.doGuess(Guess.newGuess('d')));
 	}
 	
 	@Test

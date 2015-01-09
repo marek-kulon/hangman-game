@@ -10,14 +10,14 @@ import java.util.Set;
 import org.apache.commons.lang3.Validate;
 
 public final class Secret implements Serializable {
-	private static final long serialVersionUID = 7431377069243119939L;
+	private static final long serialVersionUID = 1L;
 
 	/** Space separator between words */
 	public static final char SPACE_SEPARATOR = ' ';
 	
 	/** Unmodifiable set of allowed characters */
 	public static final Set<Character> ALLOWED_CHARACTERS = Collections.unmodifiableSet(new HashSet<Character>() {
-		private static final long serialVersionUID = 5939962907815431449L;
+		private static final long serialVersionUID = 1L;
 		{
 			// enums would be slight over-engineering
 			for(char allowed='a'; allowed<='z'; allowed++) {
@@ -49,7 +49,7 @@ public final class Secret implements Serializable {
 		final Set<Guess> uniqueGuesses = new HashSet<>();
 		for(char c : getValue().toCharArray()) {
 			if (Guess.isValidGuessCharacter(c)) { // be careful about space separators
-				uniqueGuesses.add(Guess.newFor(c));
+				uniqueGuesses.add(Guess.newGuess(c));
 			}
 		}
 		return uniqueGuesses.size();
@@ -81,7 +81,7 @@ public final class Secret implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((category == null) ? 0 : category.hashCode());
-		result = prime * result + ((value == null) ? 0 : value.toLowerCase().hashCode()); // toLowerCase is important here
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
 
@@ -115,7 +115,7 @@ public final class Secret implements Serializable {
 	public static enum Category {
 		ANIMALS, FRUITS, VEGETABLES;
 		
-		public static Category findByNameIgnoreCase(String value) {
+		public static Category getByNameIgnoreCase(String value) {
 			Validate.notNull(value);
 			
 			for(Category category: Category.values()) {
