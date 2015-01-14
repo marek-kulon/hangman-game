@@ -45,7 +45,7 @@ hangman = (function($) {
 	 * @param options [optional]
 	 * 	- type - default value is 'GET' 
 	 * 	- timeout - request timeout in ms, default value is 2500
-	 * @return jqXHR if request is executed, received deferred object otherwise
+	 * @return jqXHR if request is executed, received ajaxRequest object otherwise
 	 */
 	function requestServer(url, callbacks, ajaxRequest, options) {
 		if ($.type(url) !== 'string') throw new Error('illegal argument'); // validation of public functions

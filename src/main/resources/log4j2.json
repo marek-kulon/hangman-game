@@ -1,17 +1,5 @@
 {
   "configuration": {
-    "status": "error",
-    "name": "hangman",
-    "packages": "org.apache.logging.log4j.test",
-    "properties": {
-      "property": {
-        "name": "filename",
-        "value": "target/rolling1/rollingtest-$${sd:type}.log"
-      }
-    },
-    "ThresholdFilter": {
-      "level": "debug"
-    },
     "appenders": {
       "appender": [ {
           "type": "Console",
@@ -32,7 +20,7 @@
         }
       ],
       "root": {
-        "level": "error",
+        "level": "info",
         "AppenderRef": {
           "ref": "STDOUT"
         }

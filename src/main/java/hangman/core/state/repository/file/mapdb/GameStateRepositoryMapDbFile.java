@@ -1,6 +1,5 @@
 package hangman.core.state.repository.file.mapdb;
 
-import hangman.config.GameStateConfig;
 import hangman.core.state.GameState;
 import hangman.core.state.repository.GameStateRepository;
 import hangman.util.FileUtils;
@@ -11,23 +10,24 @@ import java.util.concurrent.ConcurrentNavigableMap;
 import org.apache.commons.lang3.Validate;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Singleton by Bill Pugh
  * 
- * Reason for it is file locking - if two instances of MapDB are trying to open the same file 
- * db throws exception 
- * 
- * @see http://www.mapdb.org/faq-problems.html
- * 
- *  
  * @author Marek Kulon
  * 
  * @see documentation on http://www.mapdb.org/
  *
  */
+@Repository("gameStateRepository")
 public class GameStateRepositoryMapDbFile implements GameStateRepository {
+	private static final Logger log = LoggerFactory.getLogger(GameStateRepositoryMapDbFile.class);
+	
 	private final DB db;
 	private final ConcurrentNavigableMap<String, GameState> map;
 	
@@ -58,22 +58,20 @@ public class GameStateRepositoryMapDbFile implements GameStateRepository {
 		db.commit();
 	}
 	
-	
-	
-	public static GameStateRepositoryMapDbFile getInstance() {
-		return SingletonHolder.INSTANCE;
-	}
-	
-	private static class SingletonHolder {
-		private static final GameStateRepositoryMapDbFile INSTANCE = new GameStateRepositoryMapDbFile();
-	}
-	
-	private GameStateRepositoryMapDbFile() {
-		File dbFile = FileUtils.getFileByPath(GameStateConfig.FILE_PATH);
+	@Autowired // use this constructor to create bean
+	private GameStateRepositoryMapDbFile(
+			@Value("${dbmap.file-path}") String filePath,
+			@Value("${dbmap.password}") String password,
+			@Value("${dbmap.collection-name}") String collectionName
+		) {
+		
+		File dbFile = FileUtils.getFileByPath(filePath);
 		db = DBMaker.newFileDB(dbFile)
 				.closeOnJvmShutdown()
-				.encryptionEnable(GameStateConfig.PASSWORD)
+				.encryptionEnable(password)
 				.make();
-		map = db.getTreeMap(GameStateConfig.COLLECTION_NAME);
+		map = db.getTreeMap(collectionName);
+		
+		log.info("dbmap created, file: {}", filePath);
 	}
 }

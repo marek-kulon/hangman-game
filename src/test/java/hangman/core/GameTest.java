@@ -26,7 +26,6 @@ public class GameTest {
 		assertTrue("lower", game.doGuess(Guess.newGuess('d')));
 	}
 	
-	
 	@Test
 	public void doGuessUpperTest() throws GuessAlreadyMadeException {
 		assertTrue(game.doGuess(Guess.newGuess('O')));

@@ -3,11 +3,10 @@ package hangman.web;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import hangman.config.GameStateConfig;
 import hangman.core.Game;
 import hangman.core.guess.Guess;
 import hangman.core.secret.Secret;
-import hangman.core.secret.SecretGenerator;
+import hangman.core.secret.service.SecretService;
 import hangman.core.state.GameState;
 import hangman.core.state.GuessAlreadyMadeException;
 import hangman.core.state.repository.GameStateRepository;
@@ -21,6 +20,7 @@ import hangman.web.transfer.GameDTO;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
@@ -41,7 +41,11 @@ public class GameController {
 	
 	private static final Logger log = LoggerFactory.getLogger(GameController.class);
 	
-	private GameStateRepository gameStateRepository = GameStateConfig.getGameStateRepository();
+	@Autowired
+	private SecretService secretService;
+	@Autowired
+	GameStateRepository gameStateRepository;
+	
 	
 	/**
 	 * Create new game
@@ -69,7 +73,7 @@ public class GameController {
 			throw new IllegalMaxIncorrectGuessesNumberException(maxIncorrectGuessesNo);
 		}
 		
-		final Secret newSecret = SecretGenerator.generate(category);
+		final Secret newSecret = secretService.getRandomByCategory(category);
 		log.debug("generated secret: {}", newSecret);
 
 		final String token = TokenGenerator.generate();

@@ -231,7 +231,7 @@
 				// display game status
 				if (hangman.state.getStatus()==='IN_PROGRESS') {
 					$('[data-hangman-status]').html('');
-				} if (hangman.state.getStatus()==='WON') {
+				} else if (hangman.state.getStatus()==='WON') {
 					$('[data-hangman-status]').html('You Won');
 				} else {
 					$('[data-hangman-status]').html('You Lost');
