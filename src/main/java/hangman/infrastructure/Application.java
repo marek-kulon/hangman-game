@@ -14,9 +14,7 @@ import org.springframework.context.annotation.Configuration;
 public class Application extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
-		SpringApplication app = new SpringApplication(Application.class);
-		app.setShowBanner(false);
-		app.run(args);
+		new SpringApplication(Application.class).run(args);
 	}
 
 	@Override

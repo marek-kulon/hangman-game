@@ -31,7 +31,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/">Hangman - Home</a>
+				<a class="navbar-brand" th:href="@{/}" href="/" >Hangman - Home</a>
 			</div>
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
@@ -189,10 +189,15 @@
 
 	<!--/*	--------------------------- JS --------------------------------- */-->
 	<script th:src="@{//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js}" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script th:src="@{/javascript/hangman.js}" src="../static/javascript/hangman.js"></script>
-	<script type="text/javascript">
+	<script th:inline="javascript">
 	/*<![CDATA[*/
-	           
+	       	// set contex path globally
+			window.ctx = /*[[${#httpServletRequest.getContextPath()}]]*/ '';     
+	/*]]>*/
+	</script>
+	<script th:src="@{/javascript/hangman.js}" src="../static/javascript/hangman.js"></script>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
 		$(function() {
 			
 			/*
@@ -211,7 +216,7 @@
 				$('[data-hangman-token="true"]').val(hangman.state.getToken());
 				
 				// update image
-				$('[data-hangman-image]').attr('src', '/images/stages/'+hangman.state.getIncorrectGuessesNo()+'.png');
+				$('[data-hangman-image]').attr('src', window.ctx+'/images/stages/'+hangman.state.getIncorrectGuessesNo()+'.png');
 				// show & hide letters
 				$('[data-hangman-letter]').each(function(){
 					var $this = $(this),
@@ -260,10 +265,6 @@
 						success: syncViewWithModel,
 						failure: displayErrorAlert
 				};
-			
-			// set contex everywhere	
-			window.ctx = '';	 //FIXME
-				
 			
 			// bind guessing
 			$('[data-hangman-letter]').click(function() {

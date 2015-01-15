@@ -1,6 +1,7 @@
 spring:
-    thymeleaf.cache: false
     profiles.active: live
+    thymeleaf.cache: false
+    main.show-banner: false
 
 ---
 

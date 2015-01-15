@@ -6,7 +6,7 @@
           "name": "STDOUT",
           "PatternLayout": {
           	// used slow but verbose %M method name
-            "pattern": "%d{yyyy-MM-dd HH:mm:ss.SSS} %2level{WARN=Warn, DEBUG=D, ERROR=ERROR, TRACE=T, INFO=I} %30c{1}.%M: %m%n"
+            "pattern": "%d{yyyy-MM-dd HH:mm:ss.SSS} %2level{WARN=Warn, DEBUG=D, ERROR=ERROR, TRACE=T, INFO=I} %28c{1}.%M:  %m%n"
           }
         } ]
     },

@@ -12,7 +12,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
-//apply plugin: 'war'
+apply plugin: 'war'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -22,7 +22,7 @@ jar {
     version =  '0.0.1-SNAPSHOT'
 }
 
-//war.archiveName "hangman-game.war"
+war.archiveName "hangman-game.war"
 
 repositories {
     mavenCentral()

@@ -11,10 +11,14 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SecretServiceSimpleRandomImpl implements SecretService {
+	
+	private static final Logger log = LoggerFactory.getLogger(SecretServiceSimpleRandomImpl.class);
 	
 	@Resource(name="secretRepository")
 	SecretRepository secretRepository;
@@ -28,6 +32,8 @@ public class SecretServiceSimpleRandomImpl implements SecretService {
 		if (secrets==null || secrets.isEmpty()) {
 			throw new IllegalStateException("no secrets from repository");
 		}
+		
+		log.debug("secrets, size: {}", secrets.size());
 		
 		// faster than standard Random in multi-threaded env
 		final Random rnd = ThreadLocalRandom.current(); 
