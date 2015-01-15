@@ -1,53 +1,15 @@
 package hangman.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class JsonConverterTest {
-	
-	@Test(expected=NullPointerException.class)
-	public void convertToStringIllegalTest() throws JsonProcessingException {
-		JsonConverter.convert(null);
-	}
-
-	/*
-	 * to string - trow exc
-	 */
-	
-	@Test
-	public void convertToStringNullValueTest() throws JsonProcessingException {
-		assertEquals("{\"value\":null}", JsonConverter.convert(new SimpleClass()));
-	}
-	
-	@Test
-	public void convertToStringSimpleValueTest() throws JsonProcessingException {
-		assertEquals("{\"value\":\"dog\"}", JsonConverter.convert(new SimpleClass("dog")));
-	}
-	
-	@Test
-	public void convertToStringEscapeCharacterTest() throws JsonProcessingException {
-		assertEquals("{\"value\":\"cat\\\\\"}", JsonConverter.convert(new SimpleClass("cat\\")));
-	}
-	
-	/*
-	 * to string - returns null
-	 */
-	
-	@Test
-	public void convertToStringOrNullOkTest() {
-		assertTrue(JsonConverter.convertOrNull(new SimpleClass("dog"))!=null);
-	}
-	
-	@Test(expected=NullPointerException.class)
-	public void convertToStringOrNullPassingNullTest() {
-		JsonConverter.convertOrNull(null);
-	}
 	
 	/*
 	 * to object - throws exc

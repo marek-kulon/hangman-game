@@ -3,11 +3,11 @@ package hangman.core.state;
 import hangman.core.guess.Guess;
 
 
-public class GuessAlreadyMadeException extends Exception {
+public class GuessAlreadyMadeException extends IllegalArgumentException {
 	
-	private static final long serialVersionUID = 3750102312498459493L;
+	private static final long serialVersionUID = 1L;
 
 	public GuessAlreadyMadeException(Guess value) {
-		super("value ["+value.getValue()+"] has already been used");
+		super("Value ["+value.getValue()+"] has already been used");
 	}
 }

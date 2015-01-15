@@ -1,0 +1,22 @@
+spring:
+    profiles.active: live
+    thymeleaf.cache: false
+    main.show-banner: false
+
+---
+
+spring.profiles: live
+dbmap:
+  file-path: game-sate-db-live.db
+  password: password
+  collection-name: gameState
+secret.file-path: secrets-live.json
+  
+---
+
+spring.profiles: test
+dbmap:
+  file-path: game-sate-db-test.db
+  password: password
+  collection-name: gameState
+secret.file-path: secrets-test.json

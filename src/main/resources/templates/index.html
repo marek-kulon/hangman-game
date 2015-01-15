@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="Hangman Game" />
+	<meta name="author" content="Marek Kulon" />
+	
+	<title>Hangman</title>
+	
+	
+	<!--/*	--------------------------- CSS --------------------------------- */-->
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" />
+	<link th:href="@{/css/hangman.css}" href="../static/css/hangman.css" rel="stylesheet" />
+	<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+	<!--/* 	--------------------------- NAVIGATION --------------------------------- */-->
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" th:href="@{/}" href="/" >Hangman - Home</a>
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="javascript:void(0);" data-hangman-new-game="animals">New Game - Animals</a></li>
+					<li><a href="javascript:void(0);" data-hangman-new-game="fruits">New Game - Fruits</a></li>
+					<li><a href="javascript:void(0);" data-hangman-new-game="vegetables">New Game - Vegetables</a></li>
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+	</div>
+	
+	<!--/* 	--------------------------- TOKEN & LOAD GAME BUTTON --------------------------------- */-->
+	<div class="container">
+		<div class="row">
+	        <div class="col-md-2 top-margin"></div>
+	        <div class="col-md-4 top-margin">
+	        	<input type="text" class="form-control" placeholder="token" data-hangman-token="true" autocomplete="off"/>
+	        </div>
+	        <div class="col-md-4 top-margin">
+	        	<button type="button" class="btn btn-primary" data-hangman-load="true" >Load Game</button>
+	        </div>
+			<div class="col-md-2 top-margin"></div>
+		</div>
+	</div>
+	
+	
+	<!--/* 	--------------------------- PLAYGROUND --------------------------------- */-->
+	<div class="container">
+		<div class="row">
+			
+			<!--/* 	--------------------------- image --------------------------------- */-->
+	        <div class="col-md-6 top-margin">
+	        	<div class="hangman-image-wrapper">
+	        		<img src="../static/images/stages/0.png" th:src="@{/images/stages/0.png}" class="img-thumbnail" data-hangman-image="true" />
+	        	</div>
+	        </div>
+	        
+	        <!--/* 	--------------------------- letters --------------------------------- */-->
+	        <div class="col-md-3 top-margin">
+	         	<div class="row">
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="a">A</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="b">B</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="c">C</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="d">D</a>
+			        </div>
+			    </div>
+			    <div class="row">
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="e">E</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="f">F</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="g">G</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="h">H</a>
+			        </div>
+			    </div>
+			    <div class="row">
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="i">I</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="j">J</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="k">K</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="l">L</a>
+			        </div>
+			    </div>
+			    <div class="row">
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="m">M</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="n">N</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="o">O</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="p">P</a>
+			        </div>
+			    </div>
+			    <div class="row">
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="q">Q</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="r">R</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="s">S</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="t">T</a>
+			        </div>
+			    </div>
+			    <div class="row">
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="u">U</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="v">V</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="w">W</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="x">X</a>
+			        </div>
+			    </div>
+			    <div class="row">
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="y">Y</a>
+			        </div>
+			        <div class="col-md-3">
+			        	<a href="javascript:void(0);" class="btn btn-warning btn-circle" data-hangman-letter="z">Z</a>
+			        </div>
+			        <div class="col-md-3">
+			        </div>
+			        <div class="col-md-3">
+			        </div>
+			    </div>
+	        </div>
+			<div class="col-md-3 top-margin">
+	        </div>
+	    </div>
+	    <div class="row top-margin">
+	        
+	        <!--/* 	--------------------------- guessed word --------------------------------- */-->
+	        <div class="col-md-4">
+	        	<h3 data-hangman-word="true" class="hangman-word"></h3>
+	        </div>
+	
+			<!--/* 	--------------------------- game status --------------------------------- */-->
+	        <div class="col-md-8">
+	        	<h2 data-hangman-status="true"></h2>
+	        </div>
+	    </div>
+	</div>
+	
+
+	<!--/*	--------------------------- JS --------------------------------- */-->
+	<script th:src="@{//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js}" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	       	// set contex path globally
+			window.ctx = /*[[${#httpServletRequest.getContextPath()}]]*/ '';     
+	/*]]>*/
+	</script>
+	<script th:src="@{/javascript/hangman.js}" src="../static/javascript/hangman.js"></script>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+		$(function() {
+			
+			/*
+			 * update view based on hangman.state
+			 */
+			function syncViewWithModel() {	
+				var i, guessWord = hangman.state.getGuessWord();
+				
+				// higlight category
+				$('[data-hangman-new-game]').each(function() {
+					$(this).parent().removeClass('active');
+				})
+				$('[data-hangman-new-game="'+hangman.state.getCategory().toLowerCase()+'"]').parent().addClass('active');
+				
+				// token
+				$('[data-hangman-token="true"]').val(hangman.state.getToken());
+				
+				// update image
+				$('[data-hangman-image]').attr('src', window.ctx+'/images/stages/'+hangman.state.getIncorrectGuessesNo()+'.png');
+				// show & hide letters
+				$('[data-hangman-letter]').each(function(){
+					var $this = $(this),
+						letter = $this.data('hangmanLetter');
+					
+					if(hangman.state.isLetterAvailable(letter)) {
+						$this.show();
+					} else {
+						$this.hide();
+					}
+				});
+				// display guess word
+				$('[data-hangman-word]').html('');
+				for (i=0; i < guessWord.length; i++) {
+					$('[data-hangman-word]').append('<span>'+guessWord[i]+'</span>');
+				}
+				// display game status
+				if (hangman.state.getStatus()==='IN_PROGRESS') {
+					$('[data-hangman-status]').html('');
+				} else if (hangman.state.getStatus()==='WON') {
+					$('[data-hangman-status]').html('You Won');
+				} else {
+					$('[data-hangman-status]').html('You Lost');
+				}
+			}
+			
+			/*
+			 * display notification about error
+			 */
+			function displayErrorAlert(errorMsg) {
+				var id = 'alert'+new Date().getTime(); // should be unique enough
+				// show alert
+				$('body').append(
+					'<div id="'+id+'" class="alert alert-danger">'+
+						'<strong> Error: "'+errorMsg+'"</strong>'+
+					'</div>'
+				);
+				// remove the very same alert
+				setTimeout(function() {
+					$('#'+id).hide(500, function(){ $(this).remove()});
+				}, 1500);
+			}
+			
+			
+			var	callbacks = { // callbacks for hangman operations 
+						success: syncViewWithModel,
+						failure: displayErrorAlert
+				};
+			
+			// bind guessing
+			$('[data-hangman-letter]').click(function() {
+				var $letter = $(this), // jQuery letter object
+					letter = $letter.data('hangmanLetter'); // letter character
+				
+				hangman.guess(letter, callbacks);
+			});
+			
+			// bind new game buttons
+			$('[data-hangman-new-game]').click(function() {
+				var category = $(this).data('hangmanNewGame');
+				
+				hangman.abortAllOperations(); // stop current operations & make sure that state/view doesn't change after reset
+				hangman.newGame(10, category, callbacks);
+			});
+			
+			// bind load
+			$('[data-hangman-load]').click(function() {
+				var token = $('[data-hangman-token="true"]').val();
+				
+				if (token) {
+					hangman.abortAllOperations(); // stop current operations & make sure state/view doesn't change after reset
+					hangman.load(token, callbacks);
+				} else {
+					displayErrorAlert('Empty token');
+				}
+			});
+			
+		});
+	
+	/*]]>*/
+	</script>
+</body>
+</html>

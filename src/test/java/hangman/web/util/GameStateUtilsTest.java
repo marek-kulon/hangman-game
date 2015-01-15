@@ -19,8 +19,8 @@ public class GameStateUtilsTest {
 	@Before
 	public void before() {
 		gs = GameState.newGameState(10, Secret.newSecret("Big Monkey", Category.ANIMALS), new HashSet<Guess>(){{
-			add(Guess.newFor('g'));
-			add(Guess.newFor('K'));
+			add(Guess.newGuess('g'));
+			add(Guess.newGuess('K'));
 		}});
 	}
 	

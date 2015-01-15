@@ -21,7 +21,7 @@ import org.apache.commons.lang3.Validate;
  *
  */
 public final class GameState implements Serializable {
-	private static final long serialVersionUID = 3690624308460611380L;
+	private static final long serialVersionUID = 1L;
 	
 	/** Maximum number of incorrect guesses  */
 	private final int maxIncorrectGuessesNo;
@@ -54,8 +54,7 @@ public final class GameState implements Serializable {
 	 * @return
 	 * @throws GuessAlreadyMadeException
 	 */
-	public static GameState newGameStateWithGuess(GameState oldGameState, Guess value)
-			throws GuessAlreadyMadeException {
+	public static GameState newGameStateWithGuess(GameState oldGameState, Guess value) {
 		Validate.notNull(oldGameState);
 		Validate.notNull(value);
 

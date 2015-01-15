@@ -14,63 +14,40 @@ import java.util.Map;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 
 
 /**
- * Read json file in thread safe manner and stores results in memory
- * 
- * 
- * WARNING:
- * Couldn't use better singleton by Bill Pugh because I want to pass *filePath* parameter there so I could test the code
- * Instead I'm using slowest thread safe solution that does the job for current application
- * 
- * I decided to do it because:
- * 1: in real live scenario I would use 'dev'/'test'/'live' environment parameters and dependency injection 
- *    instead of singletons,
- * 2: using faster, double 'locking & volatile' solution in current set up would be wrong since it would introduce silent errors:
- *    calling *loadFromFile* with different *filePath* parameter would not have an effect on internal storage 
- * 3: using double 'locking & volatile & map<fileName, storage>' would be over-engineering because
- *    I would also have to change *find...* methods to pass extra *filePath* parameter
  * 
  * @author Marek Kulon
  *
  */
-public final class SecretRepositoryJsonFile implements SecretRepository {
+@Component("secretRepository")
+public class SecretRepositoryJsonFile implements SecretRepository {
 	
 	private static final Logger log = LoggerFactory.getLogger(SecretRepositoryJsonFile.class);
-	private static SecretRepositoryJsonFile INSTANCE = null;
+	
 	private final Map<Category, List<Secret>> storage = new HashMap<Secret.Category, List<Secret>>(); // do not expose it outside
-	private final String filePath;
-	/**
-	 * @param filePath
-	 * @return
-	 */
-	public static synchronized SecretRepositoryJsonFile loadFromFile(String filePath) {
-		Validate.notBlank(filePath);
-		
-		if (INSTANCE != null) {
-			if (!INSTANCE.getFilePath().equals(filePath)) {
-				throw new SecretRepositoryAlreadyLoaded("repository is already loaded from ["+INSTANCE.getFilePath()+"]");
-			}
-		}
-		if (INSTANCE == null) {
-			INSTANCE = new SecretRepositoryJsonFile(filePath);
-		}
-		return INSTANCE;
+
+	@Override
+	public List<Secret> findAllByCategory(Category category) {
+		Validate.notNull(category);
+		return storage.get(category);
 	}
 	
-	// private constructor
-	private SecretRepositoryJsonFile(String filePath) {
-		
-		this.filePath = filePath;
+	@Autowired // use this constructor to create bean
+    private SecretRepositoryJsonFile(@Value("${secret.file-path}") String filePath) {
+		log.info("loading secrets from file: {}", filePath);
 		
 		final String json = FileUtils.readFileToString(filePath);
+		
 		final JsonFileData data = JsonConverter.convertOrNull(json, JsonFileData.class);
 		
 		for(Category category: Category.values()) {
-			
 			final List<Secret> secrets = new ArrayList<Secret>();
 			
 			List<String> strSecrets = data.categoryToSecrets.get(category.name());
@@ -83,18 +60,7 @@ public final class SecretRepositoryJsonFile implements SecretRepository {
 			}
 			storage.put(category, secrets);
 		}
-	}
-
-
-	@Override
-	public List<Secret> findAllByCategory(Category category) {
-		Validate.notNull(category);
-		return storage.get(category);
-	}
-	
-	public String getFilePath() {
-		return filePath;
-	}
+    }
 
 	private static class JsonFileData {
 		Map<String, List<String>> categoryToSecrets = new HashMap<String, List<String>>();
