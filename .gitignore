@@ -9,6 +9,7 @@ bin/
 
 # intellij
 .idea/
+*.ipr
 *.iml
 *.iws
 

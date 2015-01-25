@@ -44,7 +44,7 @@ public class GameController {
 	@Autowired
 	private SecretService secretService;
 	@Autowired
-	GameStateRepository gameStateRepository;
+	private GameStateRepository gameStateRepository;
 	
 	
 	/**
