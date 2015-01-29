@@ -47,7 +47,7 @@ public class Game {
 	 * @return
 	 */
 	public static Game newGame(int maxIncorrectGuessesNo, Secret secret) {
-		Validate.isTrue(maxIncorrectGuessesNo>0);
+		Validate.isTrue(maxIncorrectGuessesNo >= 0);
 		Validate.notNull(secret);
 
 		GameState newGameState = GameState.newGameState(

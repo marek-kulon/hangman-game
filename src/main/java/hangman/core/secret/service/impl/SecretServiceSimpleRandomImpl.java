@@ -21,7 +21,7 @@ public class SecretServiceSimpleRandomImpl implements SecretService {
 	private static final Logger log = LoggerFactory.getLogger(SecretServiceSimpleRandomImpl.class);
 	
 	@Resource(name="secretRepository")
-	SecretRepository secretRepository;
+	private SecretRepository secretRepository;
 	
 	@Override
 	public Secret getRandomByCategory(Secret.Category category) {

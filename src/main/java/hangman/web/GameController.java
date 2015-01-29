@@ -69,7 +69,7 @@ public class GameController {
 		}
 		
 		if (maxIncorrectGuessesNo < 0) {
-			log.warn("incorcet maxIncorrectGuessesNo value: {}", maxIncorrectGuessesNo);
+			log.warn("incorrect maxIncorrectGuessesNo value: {}", maxIncorrectGuessesNo);
 			throw new IllegalMaxIncorrectGuessesNumberException(maxIncorrectGuessesNo);
 		}
 		
@@ -85,7 +85,7 @@ public class GameController {
 		
 		final GameDTO gameData = new GameDTO(newGame);
 		final Link gameLink = new Link(token);
-		return new Resource<GameDTO>(gameData, gameLink);
+		return new Resource<>(gameData, gameLink);
 	}
 	
 	

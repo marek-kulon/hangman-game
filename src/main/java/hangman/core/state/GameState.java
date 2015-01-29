@@ -62,7 +62,7 @@ public final class GameState implements Serializable {
 			throw new GuessAlreadyMadeException(value);
 		}
 
-		Set<Guess> newGuesses = new HashSet<Guess>();
+		Set<Guess> newGuesses = new HashSet<>();
 		newGuesses.addAll(oldGameState.getGuesses());
 		newGuesses.add(value);
 
@@ -97,8 +97,10 @@ public final class GameState implements Serializable {
 	 * @return
 	 */
 	public GameStatus getGameStatus() {
-		// users incorrect guesses number == maximum value
-		if (getIncorrectGuessesNo() == getMaxIncorrectGuessesNo()) {
+        final int incorrectGuessesNo = getIncorrectGuessesNo();
+
+		// users incorrect guesses number >= maximum value
+		if (incorrectGuessesNo > 0 && incorrectGuessesNo >= getMaxIncorrectGuessesNo()) {
 			return LOST;
 		}
 		// number of correct guesses made by user == number of guesses it takes to know the secret
@@ -121,7 +123,7 @@ public final class GameState implements Serializable {
 		this.guesses = Collections.unmodifiableSet(guesses); // make sure is immutable
 		
 		// post construct: validate incorrect guesses number in relation to maximum allowed value
-		if (getIncorrectGuessesNo() > getMaxIncorrectGuessesNo()) {
+		if (getMaxIncorrectGuessesNo()!=0 && getIncorrectGuessesNo() > getMaxIncorrectGuessesNo()) {
 			throw new IllegalGameStateException("Number of incorrect guesses is grater than maximum allowed value");
 		}
 	}
