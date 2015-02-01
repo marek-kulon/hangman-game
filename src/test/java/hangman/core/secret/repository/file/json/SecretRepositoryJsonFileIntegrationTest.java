@@ -30,8 +30,8 @@ public class SecretRepositoryJsonFileIntegrationTest {
 		
 		assertNotNull(secrets);
 		assertEquals(2, secrets.size());
-		assertEquals(Secret.newSecret("Monkey", Category.ANIMALS), secrets.get(0));
-		assertEquals(Secret.newSecret("Lion", Category.ANIMALS), secrets.get(1));
+		assertEquals(Secret.of("Monkey", Category.ANIMALS), secrets.get(0));
+		assertEquals(Secret.of("Lion", Category.ANIMALS), secrets.get(1));
 	}
 	
 }

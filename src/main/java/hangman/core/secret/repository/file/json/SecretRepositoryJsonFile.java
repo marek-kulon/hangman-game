@@ -53,7 +53,7 @@ public class SecretRepositoryJsonFile implements SecretRepository {
 			List<String> strSecrets = data.categoryToSecrets.get(category.name());
 			if (strSecrets!=null) {
 				for(String value : strSecrets) {
-					secrets.add((Secret.newSecret(value, category)));
+					secrets.add((Secret.of(value, category)));
 				}
 			} else {
 				log.warn("secrets for category missing, category: {}, file path: {}", category, filePath);

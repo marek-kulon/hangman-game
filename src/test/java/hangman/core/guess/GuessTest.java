@@ -3,7 +3,7 @@ package hangman.core.guess;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import hangman.core.guess.Guess;
+
 import hangman.core.secret.Secret;
 import hangman.core.secret.Secret.Category;
 
@@ -16,33 +16,33 @@ public class GuessTest {
 	 */
 
 	@Test(expected=NullPointerException.class)
-	public void isCorrectForNullTest() {
-		assertTrue(Guess.newGuess('a').isCorrectFor(null));
+	public void isCorrectForNull() {
+		assertTrue(Guess.of('a').isCorrectFor(null));
 	}
 	
 	@Test
-	public void isCorrectForLowerUpperTest() {
-		assertTrue(Guess.newGuess('a').isCorrectFor(Secret.newSecret("ALBATROSS", Category.ANIMALS)));
+	public void isCorrectForLowerUpper() {
+		assertTrue(Guess.of('a').isCorrectFor(Secret.of("ALBATROSS", Category.ANIMALS)));
 	}
 	
 	@Test
-	public void isCorrectForUpperLowerTest() {
-		assertTrue(Guess.newGuess('A').isCorrectFor(Secret.newSecret("albatross", Category.ANIMALS)));
+	public void isCorrectForUpperLower() {
+		assertTrue(Guess.of('A').isCorrectFor(Secret.of("albatross", Category.ANIMALS)));
 	}
 	
 	@Test
-	public void isCorrectForLowerLowerTest() {
-		assertTrue(Guess.newGuess('a').isCorrectFor(Secret.newSecret("albatross", Category.ANIMALS)));
+	public void isCorrectForLowerLower() {
+		assertTrue(Guess.of('a').isCorrectFor(Secret.of("albatross", Category.ANIMALS)));
 	}
 	
 	@Test
-	public void isCorrectForUpperUpperTest() {
-		assertTrue(Guess.newGuess('A').isCorrectFor(Secret.newSecret("ALBATROSS", Category.ANIMALS)));
+	public void isCorrectForUpperUpper() {
+		assertTrue(Guess.of('A').isCorrectFor(Secret.of("ALBATROSS", Category.ANIMALS)));
 	}
 	
 	@Test
-	public void isCorrectForIcorrectGuessTest() {
-		assertFalse(Guess.newGuess('z').isCorrectFor(Secret.newSecret("Albatross", Category.ANIMALS)));
+	public void isCorrectForIcorrectGuess() {
+		assertFalse(Guess.of('z').isCorrectFor(Secret.of("Albatross", Category.ANIMALS)));
 	}
 	
 	/*
@@ -50,27 +50,27 @@ public class GuessTest {
 	 */
 	
 	@Test
-	public void isValidLowerAlfaTrueTest() {
+	public void isValidLowerAlfaTrue() {
 		assertTrue(Guess.isValidGuessCharacter('a'));
 	}
 	
 	@Test
-	public void isValidUpperAlfaTrueTest() {
+	public void isValidUpperAlfaTrue() {
 		assertTrue(Guess.isValidGuessCharacter('A'));
 	}
 	
 	@Test
-	public void isValidSpaceFalseTest() {
+	public void isValidSpaceFalse() {
 		assertFalse(Guess.isValidGuessCharacter(' '));
 	}
 	
 	@Test
-	public void isValidDigitFalseTest() {
+	public void isValidDigitFalse() {
 		assertFalse(Guess.isValidGuessCharacter('1'));
 	}
 	
 	@Test
-	public void isValidDotFalseTest() {
+	public void isValidDotFalse() {
 		assertFalse(Guess.isValidGuessCharacter('.'));
 	}
 	
@@ -79,11 +79,11 @@ public class GuessTest {
 	 */
 	
 	@Test
-	public void equalsAndHashCodeTest() {
-		final Guess gaOne = Guess.newGuess('a');
-		final Guess gaTwo = Guess.newGuess('a');
-		final Guess gaThree = Guess.newGuess('a');
-		final Guess gAOne = Guess.newGuess('A');
+	public void equalsAndHashCode() {
+		final Guess gaOne = Guess.of('a');
+		final Guess gaTwo = Guess.of('a');
+		final Guess gaThree = Guess.of('a');
+		final Guess gAOne = Guess.of('A');
 		
 		// equals
 		assertFalse("equals: null", gaOne.equals(null));
@@ -92,7 +92,7 @@ public class GuessTest {
 		assertTrue("equals: is transitive", gaOne.equals(gaTwo) && gaTwo.equals(gaThree) && gaOne.equals(gaThree));
 		assertTrue("equals: is consistent", gaOne.equals(gaTwo) && gaOne.equals(gaTwo));
 		
-		final Guess gzOne = Guess.newGuess('z');
+		final Guess gzOne = Guess.of('z');
 		
 		assertFalse("equals: not equal", gaOne.equals(gzOne));
 		assertTrue("equals: lower & upper cases", gaOne.equals(gAOne) && gAOne.equals(gaOne));
@@ -107,22 +107,22 @@ public class GuessTest {
 	
 	@Test
 	public void compareTest() {
-		assertTrue(Guess.newGuess('b').compareTo(Guess.newGuess('a')) > 0);
-		assertTrue(Guess.newGuess('b').compareTo(Guess.newGuess('A')) > 0);
-		assertTrue(Guess.newGuess('B').compareTo(Guess.newGuess('a')) > 0);
-		assertTrue(Guess.newGuess('B').compareTo(Guess.newGuess('A')) > 0);
+		assertTrue(Guess.of('b').compareTo(Guess.of('a')) > 0);
+		assertTrue(Guess.of('b').compareTo(Guess.of('A')) > 0);
+		assertTrue(Guess.of('B').compareTo(Guess.of('a')) > 0);
+		assertTrue(Guess.of('B').compareTo(Guess.of('A')) > 0);
 		
-		assertEquals(0, Guess.newGuess('a').compareTo(Guess.newGuess('a')));
-		assertEquals(0, Guess.newGuess('a').compareTo(Guess.newGuess('A')));
-		assertEquals(0, Guess.newGuess('A').compareTo(Guess.newGuess('A')));
-		assertEquals(0, Guess.newGuess('A').compareTo(Guess.newGuess('a')));
+		assertEquals(0, Guess.of('a').compareTo(Guess.of('a')));
+		assertEquals(0, Guess.of('a').compareTo(Guess.of('A')));
+		assertEquals(0, Guess.of('A').compareTo(Guess.of('A')));
+		assertEquals(0, Guess.of('A').compareTo(Guess.of('a')));
 		
-		assertTrue(Guess.newGuess('a').compareTo(Guess.newGuess('b')) < 0);
-		assertTrue(Guess.newGuess('a').compareTo(Guess.newGuess('B')) < 0);
-		assertTrue(Guess.newGuess('A').compareTo(Guess.newGuess('b')) < 0);
-		assertTrue(Guess.newGuess('A').compareTo(Guess.newGuess('B')) < 0);
+		assertTrue(Guess.of('a').compareTo(Guess.of('b')) < 0);
+		assertTrue(Guess.of('a').compareTo(Guess.of('B')) < 0);
+		assertTrue(Guess.of('A').compareTo(Guess.of('b')) < 0);
+		assertTrue(Guess.of('A').compareTo(Guess.of('B')) < 0);
 		
-		assertTrue(Guess.newGuess('A').compareTo(null) > 0);
-		assertTrue(Guess.newGuess('a').compareTo(null) > 0);
+		assertTrue(Guess.of('A').compareTo(null) > 0);
+		assertTrue(Guess.of('a').compareTo(null) > 0);
 	}
 }

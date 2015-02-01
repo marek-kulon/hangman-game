@@ -27,7 +27,7 @@ public class GameStateUtils {
 		final StringBuilder sb = new StringBuilder();
 		for(int i=0; i<secret.getValue().length(); i++) {
 			char character = secret.getValue().charAt(i);
-			boolean useOriginal = character==Secret.SPACE_SEPARATOR || guesses.contains(Guess.newGuess(character)); //check for space before creating new guess
+			boolean useOriginal = character==Secret.SPACE_SEPARATOR || guesses.contains(Guess.of(character)); //check for space before creating new guess
 			sb.append(useOriginal ? character : notGuessedCharacterReplacement);
 		}
 		return sb.toString();

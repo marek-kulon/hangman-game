@@ -13,10 +13,10 @@ public class SecretTest {
 	 * getGuessesToKnowMe
 	 */
 	@Test
-	public void getGuessesToKnowMeNoTest() {
-		assertEquals(3, Secret.newSecret("dog", Category.ANIMALS).getGuessesToKnowMeNo());
-		assertEquals(2, Secret.newSecret("doo", Category.ANIMALS).getGuessesToKnowMeNo());
-		assertEquals(2, Secret.newSecret("doO", Category.ANIMALS).getGuessesToKnowMeNo());
+	public void getGuessesToKnowMeNo() {
+		assertEquals(3, Secret.of("dog", Category.ANIMALS).getGuessesToKnowMeNo());
+		assertEquals(2, Secret.of("doo", Category.ANIMALS).getGuessesToKnowMeNo());
+		assertEquals(2, Secret.of("doO", Category.ANIMALS).getGuessesToKnowMeNo());
 	}
 	
 	
@@ -25,10 +25,10 @@ public class SecretTest {
 	 */
 	
 	@Test
-	public void equalsAndHashCodeTest() {
-		final Secret sdOne = Secret.newSecret("dog", Category.ANIMALS);
-		final Secret scTwo = Secret.newSecret("dog", Category.ANIMALS);
-		final Secret sdThree = Secret.newSecret("dog", Category.ANIMALS);
+	public void equalsAndHashCode() {
+		final Secret sdOne = Secret.of("dog", Category.ANIMALS);
+		final Secret scTwo = Secret.of("dog", Category.ANIMALS);
+		final Secret sdThree = Secret.of("dog", Category.ANIMALS);
 		
 		// equals
 		assertFalse("equals: null", sdOne.equals(null));
@@ -37,8 +37,8 @@ public class SecretTest {
 		assertTrue("equals: is transitive", sdOne.equals(scTwo) && scTwo.equals(sdThree) && sdOne.equals(sdThree));
 		assertTrue("equals: is consistent", sdOne.equals(scTwo) && sdOne.equals(scTwo));
 		
-		final Secret scOne = Secret.newSecret("cat", Category.ANIMALS);
-		final Secret scVTwo = Secret.newSecret("cat", Category.VEGETABLES);
+		final Secret scOne = Secret.of("cat", Category.ANIMALS);
+		final Secret scVTwo = Secret.of("cat", Category.VEGETABLES);
 		
 		assertFalse("equals: not equal", sdOne.equals(scOne));
 		assertFalse("equals: not equal", scOne.equals(scVTwo));

@@ -18,15 +18,15 @@ public class GameStateUtilsTest {
 	@SuppressWarnings("serial")
 	@Before
 	public void before() {
-		gs = GameState.newGameState(10, Secret.newSecret("Big Monkey", Category.ANIMALS), new HashSet<Guess>(){{
-			add(Guess.newGuess('g'));
-			add(Guess.newGuess('K'));
+		gs = GameState.newGameState(10, Secret.of("Big Monkey", Category.ANIMALS), new HashSet<Guess>(){{
+			add(Guess.of('g'));
+			add(Guess.of('K'));
 		}});
 	}
 	
 	
 	@Test
-	public void getGuessedValueTest() {
+	public void getGuessedValue() {
 		assertEquals("__g ___k__", GameStateUtils.getGuessedValue(gs, '_'));
 	}
 

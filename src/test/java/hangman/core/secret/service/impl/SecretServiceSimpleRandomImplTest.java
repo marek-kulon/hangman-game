@@ -32,7 +32,7 @@ public class SecretServiceSimpleRandomImplTest {
 
     @Test
     public void generateOne() throws Exception {
-        final Secret testSecret = Secret.newSecret("test", Secret.Category.ANIMALS);
+        final Secret testSecret = Secret.of("test", Secret.Category.ANIMALS);
         final List<Secret> secrets = Arrays.asList(testSecret);
 
         when(secretRepository.findAllByCategory(Secret.Category.ANIMALS)).thenReturn(secrets);

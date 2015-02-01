@@ -16,32 +16,32 @@ public class JsonConverterTest {
 	 */
 	
 	@Test(expected=NullPointerException.class)
-	public void convertToStringIllegalValueTest() throws IOException {
+	public void convertToStringIllegalValue() throws IOException {
 		JsonConverter.convert(null, SimpleClass.class);
 	}
 	
 	@Test(expected=NullPointerException.class)
-	public void convertToStringIllegalValueTypeTest() throws IOException {
+	public void convertToStringIllegalValueType() throws IOException {
 		JsonConverter.convert("{\"value\":\"dog\"}", null);
 	}
 	
 	@Test
-	public void convertToObjectNullValueTest() throws IOException {
+	public void convertToObjectNullValue() throws IOException {
 		assertEquals(new SimpleClass(), JsonConverter.convert("{\"value\":null}", SimpleClass.class));
 	}
 	
 	@Test
-	public void convertToObjectSimpleValueTest() throws IOException {
+	public void convertToObjectSimpleValue() throws IOException {
 		assertEquals(new SimpleClass("dog"), JsonConverter.convert("{\"value\":\"dog\"}", SimpleClass.class));
 	}
 	
 	@Test
-	public void convertToObjectEscapedCharacterTest() throws IOException {
+	public void convertToObjectEscapedCharacter() throws IOException {
 		assertEquals(new SimpleClass("cat\\"), JsonConverter.convert("{\"value\":\"cat\\\\\"}", SimpleClass.class));
 	}
 	
 	@Test(expected=JsonParseException.class)
-	public void convertToObjectIncorrectStringTest() throws IOException {
+	public void convertToObjectIncorrectString() throws IOException {
 		assertEquals(new SimpleClass(), JsonConverter.convert("{\"val\"}", SimpleClass.class));
 	}
 	
@@ -50,22 +50,22 @@ public class JsonConverterTest {
 	 */
 	
 	@Test
-	public void convertOrNullToObjectOkStrngTest() {
+	public void convertOrNullToObjectOkStrng() {
 		assertTrue(JsonConverter.convertOrNull("{\"value\":\"dog\"}", SimpleClass.class)!=null);
 	}
 	
 	@Test
-	public void convertOrNullToObjectNotOkStrngTest() {
+	public void convertOrNullToObjectNotOkStrng() {
 		assertTrue(JsonConverter.convertOrNull("{\"value\":", SimpleClass.class)==null);
 	}
 	
 	@Test(expected=NullPointerException.class)
-	public void convertOrNullToObject_Null1Test() {
+	public void convertOrNullToObject_Null1() {
 		JsonConverter.convertOrNull(null, SimpleClass.class);
 	}
 	
 	@Test(expected=NullPointerException.class)
-	public void convertOrNullToObject_Null2Test() {
+	public void convertOrNullToObject_Null2() {
 		JsonConverter.convertOrNull("", null);
 	}
 	

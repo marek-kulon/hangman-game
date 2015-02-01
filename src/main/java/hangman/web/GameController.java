@@ -100,7 +100,7 @@ public class GameController {
 	@ResponseStatus(HttpStatus.OK)
 	protected GameDTO load(@PathVariable("token") String token) {
 		log.debug("received: {}", token);
-		final Game game = Game.restore(loadGameState(token));
+		final Game game = Game.of(loadGameState(token));
 		return new GameDTO(game);
 	}
 	
@@ -125,12 +125,12 @@ public class GameController {
 			throw new IllegalGuessValueException(value);
 		}
 		
-		final Guess guess = Guess.newGuess(value);
+		final Guess guess = Guess.of(value);
 		
 		// get old game state from repository
-		final Game game = Game.restore(loadGameState(token));
+		final Game game = Game.of(loadGameState(token));
 		// perform guess operation
-		boolean isCorrect = game.doGuess(guess);
+		boolean isCorrect = game.makeAGuess(guess);
 		log.debug("isCorrect: {}", isCorrect);
 		
 		// save result back to repository

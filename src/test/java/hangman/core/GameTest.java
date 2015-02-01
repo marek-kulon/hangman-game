@@ -3,7 +3,7 @@ package hangman.core;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import hangman.core.Game;
+
 import hangman.core.guess.Guess;
 import hangman.core.secret.Secret;
 import hangman.core.secret.Secret.Category;
@@ -18,47 +18,47 @@ public class GameTest {
 	
 	@Before
 	public void setUp() {
-		game = Game.newGame(2, Secret.newSecret("dog", Category.ANIMALS));
+		game = Game.newGame(2, Secret.of("dog", Category.ANIMALS));
 	}
 
 	@Test
-	public void doGuessLowerTest() throws GuessAlreadyMadeException {
-		assertTrue("lower", game.doGuess(Guess.newGuess('d')));
+	public void makeAGuessLower() throws GuessAlreadyMadeException {
+		assertTrue("lower", game.makeAGuess(Guess.of('d')));
 	}
 	
 	@Test
-	public void doGuessUpperTest() throws GuessAlreadyMadeException {
-		assertTrue(game.doGuess(Guess.newGuess('O')));
+	public void makeAGuessUpper() throws GuessAlreadyMadeException {
+		assertTrue(game.makeAGuess(Guess.of('O')));
 	}
 	
 	@Test
-	public void doGuessWrongTest() throws GuessAlreadyMadeException {
-		assertFalse("wrong", game.doGuess(Guess.newGuess('z')));
+	public void makeAGuessWrong() throws GuessAlreadyMadeException {
+		assertFalse("wrong", game.makeAGuess(Guess.of('z')));
 	}
 	
 	@Test
-	public void doGuessAlreadyWonTest() throws GuessAlreadyMadeException {
-		game.doGuess(Guess.newGuess('d'));
-		game.doGuess(Guess.newGuess('o'));
-		game.doGuess(Guess.newGuess('g'));
-		assertFalse("won -> false", game.doGuess(Guess.newGuess('d')));
+	public void makeAGuessAlreadyWon() throws GuessAlreadyMadeException {
+		game.makeAGuess(Guess.of('d'));
+		game.makeAGuess(Guess.of('o'));
+		game.makeAGuess(Guess.of('g'));
+		assertFalse("won -> false", game.makeAGuess(Guess.of('d')));
 	}
 	
 	@Test
-	public void doGuessAlreadyLostTest() throws GuessAlreadyMadeException {
-		game.doGuess(Guess.newGuess('X'));
-		game.doGuess(Guess.newGuess('Y'));
-		assertFalse("lost -> false", game.doGuess(Guess.newGuess('d')));
+	public void makeAGuessAlreadyLost() throws GuessAlreadyMadeException {
+		game.makeAGuess(Guess.of('X'));
+		game.makeAGuess(Guess.of('Y'));
+		assertFalse("lost -> false", game.makeAGuess(Guess.of('d')));
 	}
 	
 	@Test
-	public void newGameTest() throws GuessAlreadyMadeException {
-		assertEquals(0, Game.newGame(2, Secret.newSecret("dog", Category.ANIMALS)).getGameState().getGuesses().size());
+	public void newGame() throws GuessAlreadyMadeException {
+		assertEquals(0, Game.newGame(2, Secret.of("dog", Category.ANIMALS)).getGameState().getGuesses().size());
 	}
 	
 	@Test
-	public void restoreTest() throws GuessAlreadyMadeException {
-		Game g = Game.restore(game.getGameState());
+	public void restoreGame() throws GuessAlreadyMadeException {
+		Game g = Game.of(game.getGameState());
 		
 		assertEquals(g.getGameState(), game.getGameState());
 	}

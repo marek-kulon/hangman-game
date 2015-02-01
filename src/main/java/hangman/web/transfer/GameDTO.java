@@ -103,7 +103,7 @@ public class GameDTO {
 			
 			@JsonCreator
 			public GuessDto(@JsonProperty("value") char value) {
-				this.guess = Guess.newGuess(value);
+				this.guess = Guess.of(value);
 			}
 		}
 	}

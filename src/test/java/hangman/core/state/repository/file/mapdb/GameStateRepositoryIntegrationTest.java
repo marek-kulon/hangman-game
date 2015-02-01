@@ -34,10 +34,10 @@ public class GameStateRepositoryIntegrationTest {
 	@Before
 	public void setUp () {
 		Set<Guess> guesses = new HashSet<>();
-		guesses.add(Guess.newGuess('a'));
+		guesses.add(Guess.of('a'));
 
-		gs1 = GameState.newGameState(2, Secret.newSecret("dog", Category.ANIMALS), guesses);
-		gs2 = GameState.newGameState(2, Secret.newSecret("orange", Category.FRUITS), guesses);
+		gs1 = GameState.newGameState(2, Secret.of("dog", Category.ANIMALS), guesses);
+		gs2 = GameState.newGameState(2, Secret.of("orange", Category.FRUITS), guesses);
 	}
 
 	@Test

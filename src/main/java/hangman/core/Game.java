@@ -19,7 +19,7 @@ public class Game {
 	private GameState gameState;
 
 	/**
-	 * 'Guess' action
+	 * 'Make a guess' action
 	 * 
 	 * @param guess
 	 * @return true if:
@@ -27,7 +27,7 @@ public class Game {
 	 * - guess is right
 	 * @throws GuessAlreadyMadeException
 	 */
-	public boolean doGuess(Guess guess) throws GuessAlreadyMadeException {
+	public boolean makeAGuess(Guess guess) throws GuessAlreadyMadeException {
 		Validate.notNull(guess);
 		
 		if (!GameStatus.IN_PROGRESS.equals(gameState.getGameStatus())) {
@@ -63,7 +63,7 @@ public class Game {
 	 * @param gameState
 	 * @return
 	 */
-	public static Game restore(GameState gameState) {
+	public static Game of(GameState gameState) {
 		 return new Game(Validate.notNull(gameState));
 	}
 	

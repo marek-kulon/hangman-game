@@ -49,7 +49,7 @@ public final class Secret implements Serializable {
 		final Set<Guess> uniqueGuesses = new HashSet<>();
 		for(char c : getValue().toCharArray()) {
 			if (Guess.isValidGuessCharacter(c)) { // be careful about space separators
-				uniqueGuesses.add(Guess.newGuess(c));
+				uniqueGuesses.add(Guess.of(c));
 			}
 		}
 		return uniqueGuesses.size();
@@ -58,9 +58,15 @@ public final class Secret implements Serializable {
 	public static boolean isValidSecretCharacter(char value) {
 		return value == SPACE_SEPARATOR || ALLOWED_CHARACTERS.contains(value);
 	}
-	
-	// for convenience
-	public static Secret newSecret(String value, Category category){
+
+    /**
+     * Returns a {@code Secret} of a specified not-blank value and not-null category
+     *
+     * @param value value to guess
+     * @param category category of secret
+     * @return newly created {@code Secret}
+     */
+	public static Secret of(String value, Category category){
 		return new Secret(value, category);
 	}
 	

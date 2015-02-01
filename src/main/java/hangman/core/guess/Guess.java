@@ -32,7 +32,7 @@ public final class Guess implements Comparable<Guess>, Serializable {
 	 * @param value
 	 * @return
 	 */
-	public static Guess newGuess(char value) {
+	public static Guess of(char value) {
 		return new Guess(value);
 	}
 
