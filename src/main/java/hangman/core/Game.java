@@ -4,10 +4,9 @@ import hangman.core.guess.Guess;
 import hangman.core.secret.Secret;
 import hangman.core.state.GameState;
 import hangman.core.state.GuessAlreadyMadeException;
+import org.apache.commons.lang3.Validate;
 
 import java.util.HashSet;
-
-import org.apache.commons.lang3.Validate;
 
 /**
  * 
@@ -82,4 +81,8 @@ public class Game {
 	public String toString() {
 		return "Game [gameState=" + gameState + "]";
 	}
+
+    public static enum GameStatus {
+        WON, LOST, IN_PROGRESS
+    }
 }

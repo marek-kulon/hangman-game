@@ -1,18 +1,16 @@
 package hangman.core.state;
 
-import static hangman.core.GameStatus.IN_PROGRESS;
-import static hangman.core.GameStatus.LOST;
-import static hangman.core.GameStatus.WON;
-import hangman.core.GameStatus;
 import hangman.core.guess.Guess;
 import hangman.core.secret.Secret;
+import org.apache.commons.lang3.Validate;
 
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang3.Validate;
+import static hangman.core.Game.GameStatus;
+import static hangman.core.Game.GameStatus.*;
 
 /**
  * Immutable game state
@@ -132,7 +130,7 @@ public final class GameState implements Serializable {
 		return maxIncorrectGuessesNo;
 	}
 
-	public Secret getSecret() { // TODO: secret is immutable but new copying here wouldn't hurt (changes?) 
+	public Secret getSecret() { // todo: secret is immutable but new copying here wouldn't hurt (changes?)
 		return secret;
 	}
 

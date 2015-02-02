@@ -1,13 +1,12 @@
 package hangman.web.util;
 
-import hangman.core.GameStatus;
+import hangman.core.Game.GameStatus;
 import hangman.core.guess.Guess;
 import hangman.core.secret.Secret;
 import hangman.core.state.GameState;
+import org.apache.commons.lang3.Validate;
 
 import java.util.Set;
-
-import org.apache.commons.lang3.Validate;
 
 public class GameStateUtils {
 	

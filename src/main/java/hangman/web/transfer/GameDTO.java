@@ -1,7 +1,7 @@
 package hangman.web.transfer;
 
 import hangman.core.Game;
-import hangman.core.GameStatus;
+import hangman.core.Game.GameStatus;
 import hangman.core.guess.Guess;
 import hangman.core.state.GameState;
 import hangman.web.util.GameStateUtils;
