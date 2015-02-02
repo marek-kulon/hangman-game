@@ -130,7 +130,7 @@ public final class GameState implements Serializable {
 		return maxIncorrectGuessesNo;
 	}
 
-	public Secret getSecret() { // todo: secret is immutable but new copying here wouldn't hurt (changes?)
+	public Secret getSecret() { // TODO: secret is immutable but new copying here wouldn't hurt (changes?)
 		return secret;
 	}
 
