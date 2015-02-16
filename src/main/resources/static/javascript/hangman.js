@@ -74,7 +74,7 @@ hangman = (function($) {
 			}
 		);
 		
-		// 'GET' musn't be cached
+		// 'GET' mustn't be cached
 		if (settings.type === 'GET') {
 			settings.cache = false;
 		}
