@@ -15,7 +15,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 /**
  * Monitor protecting code from race conditions by utilizing ReentrantLock.
  * Available configuration options are:
- * - concurrencyLevel: number of threads accessing protected section at the same time,
+ * - concurrencyLevel: number of threads accessing critical section at the same time,
  * - time: maximum time to wait for access to critical section,
  * - unit: time unit for the {@code time} parameter.
  *
