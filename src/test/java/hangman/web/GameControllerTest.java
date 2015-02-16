@@ -41,15 +41,15 @@ public class GameControllerTest {
      */
 
     @Test
-    public void newGameInorrectCategoryParameter() throws Exception {
+    public void newGameIncorrectCategoryParameter() throws Exception {
         mockMvc.perform(post("/game/new-game/xCategory/1").accept(APPLICATION_JSON))
-                .andExpect(status().isConflict());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void newGameInorrectMaxIncorrectGuessesNoParameter() throws Exception {
+    public void newGameIncorrectMaxIncorrectGuessesNoParameter() throws Exception {
         mockMvc.perform(post("/game/new-game/animals/-1").accept(APPLICATION_JSON))
-                .andExpect(status().isConflict());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -111,7 +111,7 @@ public class GameControllerTest {
         final String token = createNewGame("fruits", 10);
 
         mockMvc.perform(patch("/game/guess/" + token + "/-").accept(APPLICATION_JSON))
-                .andExpect(status().isConflict());
+                .andExpect(status().isBadRequest());
     }
 
 

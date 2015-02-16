@@ -15,10 +15,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 @ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -26,7 +27,8 @@ import static org.junit.Assert.assertTrue;
 public class GameStateRepositoryIntegrationTest {
 
 	@Autowired
-	GameStateRepository gameStateRepository;
+    private
+    GameStateRepository gameStateRepository;
 	
 	private GameState gs1;
 	private GameState gs2;
@@ -43,21 +45,21 @@ public class GameStateRepositoryIntegrationTest {
 	@Test
 	public void testSaveFind() {
 		gameStateRepository.saveOrUpdate("1", gs1);
-		GameState found = gameStateRepository.find("1");
-		assertEquals(gs1, found);
+		Optional<GameState> found = gameStateRepository.find("1");
+		assertEquals(gs1, found.get());
 	}
 	
 	@Test
 	public void testSaveUpdateFind() {
 		gameStateRepository.saveOrUpdate("1", gs1);
 		gameStateRepository.saveOrUpdate("1", gs2);
-		assertEquals(gs2, gameStateRepository.find("1"));
+		assertEquals(gs2, gameStateRepository.find("1").get());
 	}
 	
 	@Test
 	public void testSaveRemove() {
 		gameStateRepository.saveOrUpdate("1", gs1);
 		gameStateRepository.remove("1");
-		assertTrue(gameStateRepository.find("1")==null);
+		assertFalse(gameStateRepository.find("1").isPresent());
 	}
 }

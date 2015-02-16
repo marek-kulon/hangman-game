@@ -41,7 +41,7 @@ public class GuessTest {
 	}
 	
 	@Test
-	public void isCorrectForIcorrectGuess() {
+	public void isCorrectForIncorrectGuess() {
 		assertFalse(Guess.of('z').isCorrectFor(Secret.of("Albatross", Category.ANIMALS)));
 	}
 	
@@ -99,30 +99,5 @@ public class GuessTest {
 		
 		// hashCode
 		assertEquals(gaOne.hashCode(), gAOne.hashCode());
-	}
-	
-	/*
-	 * compare
-	 */
-	
-	@Test
-	public void compareTest() {
-		assertTrue(Guess.of('b').compareTo(Guess.of('a')) > 0);
-		assertTrue(Guess.of('b').compareTo(Guess.of('A')) > 0);
-		assertTrue(Guess.of('B').compareTo(Guess.of('a')) > 0);
-		assertTrue(Guess.of('B').compareTo(Guess.of('A')) > 0);
-		
-		assertEquals(0, Guess.of('a').compareTo(Guess.of('a')));
-		assertEquals(0, Guess.of('a').compareTo(Guess.of('A')));
-		assertEquals(0, Guess.of('A').compareTo(Guess.of('A')));
-		assertEquals(0, Guess.of('A').compareTo(Guess.of('a')));
-		
-		assertTrue(Guess.of('a').compareTo(Guess.of('b')) < 0);
-		assertTrue(Guess.of('a').compareTo(Guess.of('B')) < 0);
-		assertTrue(Guess.of('A').compareTo(Guess.of('b')) < 0);
-		assertTrue(Guess.of('A').compareTo(Guess.of('B')) < 0);
-		
-		assertTrue(Guess.of('A').compareTo(null) > 0);
-		assertTrue(Guess.of('a').compareTo(null) > 0);
 	}
 }

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import org.junit.Test;
 
@@ -50,12 +51,12 @@ public class JsonConverterTest {
 	 */
 	
 	@Test
-	public void convertOrNullToObjectOkStrng() {
+	public void convertOrNullToObjectOkString() {
 		assertTrue(JsonConverter.convertOrNull("{\"value\":\"dog\"}", SimpleClass.class)!=null);
 	}
 	
 	@Test
-	public void convertOrNullToObjectNotOkStrng() {
+	public void convertOrNullToObjectNotOkString() {
 		assertTrue(JsonConverter.convertOrNull("{\"value\":", SimpleClass.class)==null);
 	}
 	
@@ -73,7 +74,7 @@ public class JsonConverterTest {
 	
 	
 	public static class SimpleClass {
-		private String value;
+		public String value;
 		
 		public SimpleClass(){}
 
@@ -81,37 +82,19 @@ public class JsonConverterTest {
 			this.value = value;
 		}
 
-		public String getValue() {
-			return value;
-		}
-
-		public void setValue(String value) {
-			this.value = value;
-		}
-
 		@Override
 		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((value == null) ? 0 : value.hashCode());
-			return result;
+            return Objects.hashCode(this.value);
 		}
 
 		@Override
 		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
+			if (this == obj) return true;
+			if (obj == null) return false;
+			if (getClass() != obj.getClass()) return false;
+
 			SimpleClass other = (SimpleClass) obj;
-			if (value == null) {
-				if (other.value != null)
-					return false;
-			} else if (!value.equals(other.value))
-				return false;
-			return true;
+            return Objects.equals(this.value, other.value);
 		}
 		
 	} 

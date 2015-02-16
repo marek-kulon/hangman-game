@@ -13,13 +13,12 @@ public class GameStateTest {
 	
 	private final Guess ga = Guess.of('a');
 	private final Guess gb = Guess.of('b');
-	
-	private GameState gsNew;
-	private GameState gsWithGuess;
+
+    private GameState gsWithGuess;
 	
 	@Before
 	public void setUp() {
-		gsNew = GameState.newGameState(10, Secret.of("dog", Category.ANIMALS), new HashSet<Guess>());
+        GameState gsNew = GameState.newGameState(10, Secret.of("dog", Category.ANIMALS), new HashSet<>());
 		gsWithGuess = GameState.newGameStateWithGuess(gsNew, ga);
 	}
 	

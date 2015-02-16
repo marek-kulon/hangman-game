@@ -52,7 +52,7 @@ public class Game {
 		GameState newGameState = GameState.newGameState(
 				maxIncorrectGuessesNo,
 				secret,
-				new HashSet<Guess>()); // no guesses
+				new HashSet<>()); // no guesses
 		return new Game(newGameState);
 	}
 	
@@ -79,7 +79,7 @@ public class Game {
 
 	@Override
 	public String toString() {
-		return "Game [gameState=" + gameState + "]";
+		return String.format("Game [gameState=%s]", gameState);
 	}
 
     public static enum GameStatus {

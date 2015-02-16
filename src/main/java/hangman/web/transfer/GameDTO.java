@@ -1,17 +1,17 @@
 package hangman.web.transfer;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import hangman.core.Game;
 import hangman.core.Game.GameStatus;
 import hangman.core.guess.Guess;
 import hangman.core.state.GameState;
 import hangman.web.util.GameStateUtils;
 
-import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Game Data Transfer Object
@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class GameDTO {
 	
-	private Game game;
+	private final Game game;
 	
 	public GameDTO(Game game) {
 		this.game = game;
@@ -44,7 +44,7 @@ public class GameDTO {
 	private static class GameStateDto {
 		
 		@JsonIgnore
-		public GameState gameState;
+		public final GameState gameState;
 		
 		public GameStateDto(GameState gameState) {
 			this.gameState = gameState;
@@ -62,22 +62,18 @@ public class GameDTO {
 		
 		@JsonProperty("guesses")
 		public Set<GuessDto> getGuesses() {
-			
-			Set<GuessDto> guesses = new HashSet<>();
-			for(Guess guess : gameState.getGuesses()) {
-				guesses.add(new GuessDto(guess));
-			}
-			
-			return guesses;
+            return gameState.getGuesses().stream()
+                    .map(GuessDto::new)
+                    .collect(toSet());
 		}
 		
 		@JsonProperty("correctGuessesNo")
-		public int getCorrectGuessesNo() {
+		public long getCorrectGuessesNo() {
 			return gameState.getCorrectGuessesNo();
 		}
 		
 		@JsonProperty("incorrectGuessesNo")
-		public int getIncorrectGuessesNo() {
+		public long getIncorrectGuessesNo() {
 			return gameState.getIncorrectGuessesNo();
 		}
 		
@@ -90,7 +86,7 @@ public class GameDTO {
 		private static class GuessDto {
 			
 			@JsonIgnore
-			private Guess guess;
+			private final Guess guess;
 			
 			public GuessDto(Guess guess) {
 				this.guess = guess;

@@ -6,7 +6,7 @@ import hangman.core.secret.Secret;
 
 import org.apache.commons.lang3.Validate;
 
-public final class Guess implements Comparable<Guess>, Serializable {
+public final class Guess implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final char value;
@@ -50,32 +50,16 @@ public final class Guess implements Comparable<Guess>, Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (obj == this) {
-			return true;
-		}
-		if (obj.getClass() != getClass()) {
-			return false;
-		}
-		Guess other = (Guess) obj;
-		if (Character.toLowerCase(value) != Character.toLowerCase(other.value)) {
-			return false;
-		}
-		return true;
-	}
+        if (obj == this) return true;
+        if (obj == null) return false;
+		if (obj.getClass() != getClass()) return false;
 
-	@Override
-	public int compareTo(Guess other) {
-		char otherLwrLetter = other != null ? Character.toLowerCase(other
-				.getValue()) : Character.MIN_VALUE;
-
-		return Character.toLowerCase(this.getValue()) - otherLwrLetter;
+        Guess other = (Guess) obj;
+        return Character.toLowerCase(value) == Character.toLowerCase(other.value);
 	}
 
 	@Override
 	public String toString() {
-		return "Guess [value=" + value + "]";
+		return String.format("Guess [value=%s]", value);
 	}
 }

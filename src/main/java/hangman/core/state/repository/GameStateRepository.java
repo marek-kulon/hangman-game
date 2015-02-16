@@ -2,11 +2,13 @@ package hangman.core.state.repository;
 
 import hangman.core.state.GameState;
 
+import java.util.Optional;
+
 public interface GameStateRepository {
 
-	GameState find(String token);
+    Optional<GameState> find(String gameId);
 	
-	void saveOrUpdate(String token, GameState value);
+	void saveOrUpdate(String gameId, GameState value);
 	
-	void remove(String token);
+	void remove(String gameId);
 }

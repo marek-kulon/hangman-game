@@ -5,6 +5,7 @@ import hangman.core.state.repository.GameStateRepository;
 import hangman.util.FileUtils;
 
 import java.io.File;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentNavigableMap;
 
 import org.apache.commons.lang3.Validate;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Repository;
  * 
  * @author Marek Kulon
  * 
- * @see documentation on http://www.mapdb.org/
+ * see documentation on http://www.mapdb.org/
  *
  */
 @Repository("gameStateRepository")
@@ -33,12 +34,12 @@ public class GameStateRepositoryMapDbFile implements GameStateRepository {
 	
 	
 	@Override
-	public GameState find(String gameId) {
+	public Optional<GameState> find(String gameId) {
 		Validate.notNull(gameId);
 		
 		GameState gameState = map.get(gameId);
 		
-		return gameState;
+		return Optional.ofNullable(gameState);
 	}
 
 	@Override
