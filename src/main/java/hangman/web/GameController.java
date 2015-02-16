@@ -147,8 +147,6 @@ public class GameController {
             return game;
         });
 
-        System.out.println(gameAfterMadeGuess);
-
 		return new GameDTO(gameAfterMadeGuess);
 	}
 	
