@@ -21,24 +21,22 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
- * 
  * @author Marek Kulon
- *
  */
 @Component("secretRepository")
 public class SecretRepositoryJsonFile implements SecretRepository {
-	
-	private static final Logger log = LoggerFactory.getLogger(SecretRepositoryJsonFile.class);
+
+    private static final Logger log = LoggerFactory.getLogger(SecretRepositoryJsonFile.class);
 
     // do not expose it outside
-	private final Map<Category, List<Secret>> storage;
+    private final Map<Category, List<Secret>> storage;
 
-	@Autowired // use this constructor to create bean
+    @Autowired // use this constructor to create bean
     private SecretRepositoryJsonFile(@Value("${secret.file-path}") String filePath) {
-		log.info("loading secrets from file: {}", filePath);
-		
-		final String json = FileUtils.readFileToString(filePath);
-		final JsonFileData data = JsonConverter.convertOrNull(json, JsonFileData.class);
+        log.info("loading secrets from file: {}", filePath);
+
+        final String json = FileUtils.readFileToString(filePath);
+        final JsonFileData data = JsonConverter.convertOrNull(json, JsonFileData.class);
 
         storage = new HashMap<>();
         // convert string based data into object based one
@@ -56,11 +54,11 @@ public class SecretRepositoryJsonFile implements SecretRepository {
     }
 
     private static class JsonFileData {
-		final Map<String, List<String>> categoryToSecrets = new HashMap<>();
-		
-		@JsonAnySetter 
-		public void add(String key, List<String> values) {
-			categoryToSecrets.put(key, values);
-		}
-	}
+        final Map<String, List<String>> categoryToSecrets = new HashMap<>();
+
+        @JsonAnySetter
+        public void add(String key, List<String> values) {
+            categoryToSecrets.put(key, values);
+        }
+    }
 }

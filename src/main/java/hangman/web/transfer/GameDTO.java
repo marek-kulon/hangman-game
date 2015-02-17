@@ -18,90 +18,89 @@ import static java.util.stream.Collectors.toSet;
  * Contains:
  * - game state
  * - guess word
- * 
- * @author Marek Kulon
  *
+ * @author Marek Kulon
  */
 public class GameDTO {
-	
-	private final Game game;
-	
-	public GameDTO(Game game) {
-		this.game = game;
-	}
 
-	@JsonProperty("state")
-	public GameStateDto getGameState() {
-		return new GameStateDto(game.getGameState());
-	}
-	
-	@JsonProperty("guessedValue")
-	public String getGuessedValue() {
-		return GameStateUtils.getGuessedValue(game.getGameState(), '_');
-	}
-	
-	
-	private static class GameStateDto {
-		
-		@JsonIgnore
-		public final GameState gameState;
-		
-		public GameStateDto(GameState gameState) {
-			this.gameState = gameState;
-		}
+    private final Game game;
 
-		@JsonProperty("maxIncorrectGuessesNo")
-		public int getMaxIncorrectGuessesNo() {
-			return gameState.getMaxIncorrectGuessesNo();
-		}
-		
-		@JsonProperty("category")
-		public String getCategory() {
-			return gameState.getSecret().getCategory().name().toLowerCase();
-		}
-		
-		@JsonProperty("guesses")
-		public Set<GuessDto> getGuesses() {
+    public GameDTO(Game game) {
+        this.game = game;
+    }
+
+    @JsonProperty("state")
+    public GameStateDto getGameState() {
+        return new GameStateDto(game.getGameState());
+    }
+
+    @JsonProperty("guessedValue")
+    public String getGuessedValue() {
+        return GameStateUtils.getGuessedValue(game.getGameState(), '_');
+    }
+
+
+    private static class GameStateDto {
+
+        @JsonIgnore
+        public final GameState gameState;
+
+        public GameStateDto(GameState gameState) {
+            this.gameState = gameState;
+        }
+
+        @JsonProperty("maxIncorrectGuessesNo")
+        public int getMaxIncorrectGuessesNo() {
+            return gameState.getMaxIncorrectGuessesNo();
+        }
+
+        @JsonProperty("category")
+        public String getCategory() {
+            return gameState.getSecret().getCategory().name().toLowerCase();
+        }
+
+        @JsonProperty("guesses")
+        public Set<GuessDto> getGuesses() {
             return gameState.getGuesses().stream()
                     .map(GuessDto::new)
                     .collect(toSet());
-		}
-		
-		@JsonProperty("correctGuessesNo")
-		public long getCorrectGuessesNo() {
-			return gameState.getCorrectGuessesNo();
-		}
-		
-		@JsonProperty("incorrectGuessesNo")
-		public long getIncorrectGuessesNo() {
-			return gameState.getIncorrectGuessesNo();
-		}
-		
-		@JsonProperty("status")
-		public GameStatus getStatus() {
-			return gameState.getGameStatus();
-		}
+        }
 
-		
-		private static class GuessDto {
-			
-			@JsonIgnore
-			private final Guess guess;
-			
-			public GuessDto(Guess guess) {
-				this.guess = guess;
-			}
-			
-			@JsonProperty("value")
-			public char getValue() {
-				return guess.getValue();
-			}
-			
-			@JsonCreator
-			public GuessDto(@JsonProperty("value") char value) {
-				this.guess = Guess.of(value);
-			}
-		}
-	}
-	
+        @JsonProperty("correctGuessesNo")
+        public long getCorrectGuessesNo() {
+            return gameState.getCorrectGuessesNo();
+        }
+
+        @JsonProperty("incorrectGuessesNo")
+        public long getIncorrectGuessesNo() {
+            return gameState.getIncorrectGuessesNo();
+        }
+
+        @JsonProperty("status")
+        public GameStatus getStatus() {
+            return gameState.getGameStatus();
+        }
+
+
+        private static class GuessDto {
+
+            @JsonIgnore
+            private final Guess guess;
+
+            public GuessDto(Guess guess) {
+                this.guess = guess;
+            }
+
+            @JsonCreator
+            public GuessDto(@JsonProperty("value") char value) {
+                this.guess = Guess.of(value);
+            }
+
+            @JsonProperty("value")
+            public char getValue() {
+                return guess.getValue();
+            }
+        }
+    }
+
 }

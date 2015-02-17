@@ -79,7 +79,7 @@ public class AccessMonitorExecuteTimeoutTest extends MultithreadedTestCase {
         } catch (InterruptedException e) {
             fail("IE occurred");
         } catch (TimeoutException e) {
-            long acquiringTime = System.currentTimeMillis()-start;
+            long acquiringTime = System.currentTimeMillis() - start;
             log.info("thread 2 timeout occurred, acquiring time: {}", acquiringTime);
             assertTrue("Monitor tried to acquire lock for minimum provided time", acquiringTime >= MONITOR_TIME);
             log.info("thread 2 finished");

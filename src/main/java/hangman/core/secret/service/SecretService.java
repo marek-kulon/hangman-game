@@ -5,6 +5,6 @@ import hangman.core.secret.Secret.Category;
 
 public interface SecretService {
 
-	Secret getRandomByCategory(Category category);
+    Secret getRandomByCategory(Category category);
 
 }

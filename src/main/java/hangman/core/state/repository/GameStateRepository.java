@@ -7,8 +7,8 @@ import java.util.Optional;
 public interface GameStateRepository {
 
     Optional<GameState> find(String gameId);
-	
-	void saveOrUpdate(String gameId, GameState value);
-	
-	void remove(String gameId);
+
+    void saveOrUpdate(String gameId, GameState value);
+
+    void remove(String gameId);
 }

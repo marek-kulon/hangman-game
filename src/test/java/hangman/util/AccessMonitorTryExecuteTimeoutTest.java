@@ -29,7 +29,8 @@ public class AccessMonitorTryExecuteTimeoutTest extends MultithreadedTestCase {
 
     private AccessMonitor<String, String> monitor;
 
-    @Override public void initialize() {
+    @Override
+    public void initialize() {
         monitor = new AccessMonitor(1, MONITOR_TIME, MILLISECONDS);
     }
 
@@ -69,7 +70,7 @@ public class AccessMonitorTryExecuteTimeoutTest extends MultithreadedTestCase {
                 return null;
             });
         } catch (AccessMonitor.MonitorException e) {
-            long acquiringTime = System.currentTimeMillis()-start;
+            long acquiringTime = System.currentTimeMillis() - start;
             log.info("thread 2 timeout occurred, acquiring time: {}", acquiringTime);
             assertTrue("Monitor tried to acquire lock for minimum provided time", acquiringTime >= MONITOR_TIME);
             assertTrue("The cause of exception is timeout", e.getCause() instanceof TimeoutException);

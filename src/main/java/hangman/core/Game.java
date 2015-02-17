@@ -9,78 +9,73 @@ import org.apache.commons.lang3.Validate;
 import java.util.HashSet;
 
 /**
- * 
  * @author Marek Kulon
- *
  */
 public class Game {
 
-	private GameState gameState;
+    private GameState gameState;
 
-	/**
-	 * 'Make a guess' action
-	 * 
-	 * @param guess
-	 * @return true if:
-	 * - game wasn't finished before
-	 * - guess is right
-	 * @throws GuessAlreadyMadeException
-	 */
-	public boolean makeAGuess(Guess guess) throws GuessAlreadyMadeException {
-		Validate.notNull(guess);
-		
-		if (!GameStatus.IN_PROGRESS.equals(gameState.getGameStatus())) {
-			return false;
-		}
-		
-		this.gameState = GameState.newGameStateWithGuess(gameState, guess);
-		return guess.isCorrectFor(gameState.getSecret());
-	}
-	
-	
-	/**
-	 * 'New Game' action
-	 * 
-	 * @param maxIncorrectGuessesNo
-	 * @param secret
-	 * @return
-	 */
-	public static Game newGame(int maxIncorrectGuessesNo, Secret secret) {
-		Validate.isTrue(maxIncorrectGuessesNo >= 0);
-		Validate.notNull(secret);
+    // private constructor
+    private Game(GameState gameState) {
+        this.gameState = gameState;
+    }
 
-		GameState newGameState = GameState.newGameState(
-				maxIncorrectGuessesNo,
-				secret,
-				new HashSet<>()); // no guesses
-		return new Game(newGameState);
-	}
-	
-	/**
-	 * Recreate game out of given state
-	 * 
-	 * @param gameState
-	 * @return
-	 */
-	public static Game of(GameState gameState) {
-		 return new Game(Validate.notNull(gameState));
-	}
-	
-	public GameState getGameState() {
-		return gameState;
-	}
-	
-	
-	// private constructor
-	private Game(GameState gameState) {
-		this.gameState = gameState;
-	}
+    /**
+     * 'New Game' action
+     *
+     * @param maxIncorrectGuessesNo
+     * @param secret
+     * @return
+     */
+    public static Game newGame(int maxIncorrectGuessesNo, Secret secret) {
+        Validate.isTrue(maxIncorrectGuessesNo >= 0);
+        Validate.notNull(secret);
 
+        GameState newGameState = GameState.newGameState(
+                maxIncorrectGuessesNo,
+                secret,
+                new HashSet<>()); // no guesses
+        return new Game(newGameState);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("Game [gameState=%s]", gameState);
-	}
+    /**
+     * Recreate game out of given state
+     *
+     * @param gameState
+     * @return
+     */
+    public static Game of(GameState gameState) {
+        return new Game(Validate.notNull(gameState));
+    }
+
+    /**
+     * 'Make a guess' action
+     *
+     * @param guess
+     * @return true if:
+     * - game wasn't finished before
+     * - guess is right
+     * @throws GuessAlreadyMadeException
+     */
+    public boolean makeAGuess(Guess guess) throws GuessAlreadyMadeException {
+        Validate.notNull(guess);
+
+        if (!GameStatus.IN_PROGRESS.equals(gameState.getGameStatus())) {
+            return false;
+        }
+
+        this.gameState = GameState.newGameStateWithGuess(gameState, guess);
+        return guess.isCorrectFor(gameState.getSecret());
+    }
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Game [gameState=%s]", gameState);
+    }
 
     public static enum GameStatus {
         WON, LOST, IN_PROGRESS

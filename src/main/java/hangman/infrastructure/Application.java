@@ -10,16 +10,16 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan(basePackages={"hangman.*"})
+@ComponentScan(basePackages = {"hangman.*"})
 public class Application extends SpringBootServletInitializer {
 
-	public static void main(String[] args) {
-		new SpringApplication(Application.class).run(args);
-	}
+    public static void main(String[] args) {
+        new SpringApplication(Application.class).run(args);
+    }
 
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(Application.class);
-	}
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(Application.class);
+    }
 
 }

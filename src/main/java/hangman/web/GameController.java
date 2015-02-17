@@ -27,44 +27,43 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
- * 
  * @author Marek Kulon
- *
  */
 
 @RestController
 @RequestMapping("/game")
 public class GameController {
-	
-	private static final Logger log = LoggerFactory.getLogger(GameController.class);
+
+    private static final Logger log = LoggerFactory.getLogger(GameController.class);
 
     // TODO add docs & externalize configuration
     private static final AccessMonitor<String, Game> mainMonitor = new AccessMonitor<>(10, 2, TimeUnit.SECONDS);
-	
-	@Autowired
-	private SecretService secretService;
-	@Autowired
-	private GameStateRepository gameStateRepository;
-	
-	
-	/**
-	 * Create new game
-	 * 
-	 * @param categoryName name secret category
-	 * @param maxIncorrectGuessesNo how many times user can make a wrong guess
-	 * @return Generated game and its id
-	 * @throws SecretCategoryNotSupportedException category not supported by system
-	 * @throws IllegalMaxIncorrectGuessesNumberException
-	 */
-	@RequestMapping(value = "/new-game/{category}/{maxIncorrectGuessesNo}", method = POST, produces = "application/json")
-	@ResponseStatus(HttpStatus.CREATED)
-	protected Resource<GameDTO> newGame(
-			@PathVariable("category") String categoryName,
-			@PathVariable("maxIncorrectGuessesNo") Integer maxIncorrectGuessesNo) {
+
+    @Autowired
+    private SecretService secretService;
+    @Autowired
+    private GameStateRepository gameStateRepository;
+
+
+    /**
+     * Create new game
+     *
+     * @param categoryName          name secret category
+     * @param maxIncorrectGuessesNo how many times user can make a wrong guess
+     * @return Generated game and its id
+     * @throws SecretCategoryNotSupportedException       category not supported by system
+     * @throws IllegalMaxIncorrectGuessesNumberException
+     */
+    @RequestMapping(value = "/new-game/{category}/{maxIncorrectGuessesNo}", method = POST, produces = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    protected Resource<GameDTO> newGame(
+            @PathVariable("category") String categoryName,
+            @PathVariable("maxIncorrectGuessesNo") Integer maxIncorrectGuessesNo) {
 
         if (maxIncorrectGuessesNo < 0) {
             log.warn("incorrect maxIncorrectGuessesNo value: {}", maxIncorrectGuessesNo);
@@ -79,64 +78,65 @@ public class GameController {
                 });
 
 
-		final Secret newSecret = secretService.getRandomByCategory(category);
-		log.debug("generated secret: {}", newSecret);
+        final Secret newSecret = secretService.getRandomByCategory(category);
+        log.debug("generated secret: {}", newSecret);
 
-		final String token = TokenGenerator.generate();
-		log.debug("generated token: {}", token);
+        final String token = TokenGenerator.generate();
+        log.debug("generated token: {}", token);
 
-		final Game newGame = Game.newGame(maxIncorrectGuessesNo, newSecret);
+        final Game newGame = Game.newGame(maxIncorrectGuessesNo, newSecret);
 
-		gameStateRepository.saveOrUpdate(token, newGame.getGameState()); // no need for mainMonitor here: new token -> no chance of race condition
-		
-		GameDTO gameData = new GameDTO(newGame);
-		Link gameLink = new Link(token);
-		return new Resource<>(gameData, gameLink);
-	}
-	
-	
-	/**
-	 * Retrieve game by id
-	 * 
-	 * @param token game id
-	 * @return saved game
-	 * @throws GameNotFoundException
+        gameStateRepository.saveOrUpdate(token, newGame.getGameState()); // no need for mainMonitor here: new token -> no chance of race condition
+
+        GameDTO gameData = new GameDTO(newGame);
+        Link gameLink = new Link(token);
+        return new Resource<>(gameData, gameLink);
+    }
+
+
+    /**
+     * Retrieve game by id
+     *
+     * @param token game id
+     * @return saved game
+     * @throws GameNotFoundException
      * @throws hangman.util.AccessMonitor.MonitorException
-	 */
-	@RequestMapping(value="/load/{token}", method=GET, produces = "application/json")
-	@ResponseStatus(HttpStatus.OK)
-	protected GameDTO load(@PathVariable("token") String token) {
-		log.debug("received: {}", token);
+     */
+    @RequestMapping(value = "/load/{token}", method = GET, produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    protected GameDTO load(@PathVariable("token") String token) {
+        log.debug("received: {}", token);
 
-        Game game = mainMonitor.tryExecute(token, () -> Game.of(loadGameState(token)));
-		return new GameDTO(game);
-	}
-	
-	
-	/**
-	 * Make a guess
-	 * 
-	 * @param token game id
-	 * @param value guess made by user
-	 * @return game state after operation
-	 * @throws GameNotFoundException
-	 * @throws IllegalGuessValueException value is not recognised as a valid character
-	 * @throws GuessAlreadyMadeException if guess already had been made
+        final Supplier<Game> loadGameAction = () -> Game.of(loadGameState(token));
+        final Game game = mainMonitor.tryExecute(token, loadGameAction);
+        return new GameDTO(game);
+    }
+
+
+    /**
+     * Make a guess
+     *
+     * @param token game id
+     * @param value guess made by user
+     * @return game state after operation
+     * @throws GameNotFoundException
+     * @throws IllegalGuessValueException                  value is not recognised as a valid character
+     * @throws GuessAlreadyMadeException                   if guess already had been made
      * @throws hangman.util.AccessMonitor.MonitorException
-	 */
-	@RequestMapping(value="/guess/{token}/{value}", method=PATCH, produces = "application/json")
-	@ResponseStatus(HttpStatus.OK)
-	protected GameDTO makeAGuess(@PathVariable("token") String token, @PathVariable("value") Character value) {
-		log.debug("received, token: {}, value: {}", token, value);
-		
-		if (!Guess.isValidGuessCharacter(value)) {
-			log.warn("invalid guess value: {}", value);
-			throw new IllegalGuessValueException(value);
-		}
-		
-		final Guess guess = Guess.of(value);
+     */
+    @RequestMapping(value = "/guess/{token}/{value}", method = PATCH, produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    protected GameDTO makeAGuess(@PathVariable("token") String token, @PathVariable("value") Character value) {
+        log.debug("received, token: {}, value: {}", token, value);
 
-        final Game gameAfterMadeGuess = mainMonitor.tryExecute(token, () -> {
+        if (!Guess.isValidGuessCharacter(value)) {
+            log.warn("invalid guess value: {}", value);
+            throw new IllegalGuessValueException(value);
+        }
+
+        final Guess guess = Guess.of(value);
+
+        final Supplier<Game> makeAGuessAction = () -> {
             // get old game state from repository
             final Game game = Game.of(loadGameState(token));
             // perform guess operation
@@ -145,22 +145,23 @@ public class GameController {
             // save result back to repository
             gameStateRepository.saveOrUpdate(token, game.getGameState());
             return game;
-        });
+        };
 
-		return new GameDTO(gameAfterMadeGuess);
-	}
-	
-	
-	private GameState loadGameState(String gameId){
-		Validate.notNull(gameId);
+        final Game gameAfterMadeGuess = mainMonitor.tryExecute(token, makeAGuessAction);
+        return new GameDTO(gameAfterMadeGuess);
+    }
+
+
+    private GameState loadGameState(String gameId) {
+        Validate.notNull(gameId);
 
         GameState gameState = gameStateRepository
                 .find(gameId)
-                .orElseThrow(()  -> {
+                .orElseThrow(() -> {
                     log.warn("game not found: {}", gameId);
                     return new GameNotFoundException(gameId);
                 });
 
         return gameState;
-	}
+    }
 }

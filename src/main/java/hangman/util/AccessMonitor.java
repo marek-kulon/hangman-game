@@ -30,9 +30,10 @@ public class AccessMonitor<K, V> {
 
     /**
      * Create instance of ReadWriteMonitor
+     *
      * @param concurrencyLevel number of thread expected to access protected section simultaneously
-     * @param time the maximum time to wait for obtaining the lock
-     * @param unit the time unit of the time argument
+     * @param time             the maximum time to wait for obtaining the lock
+     * @param unit             the time unit of the time argument
      */
     public AccessMonitor(int concurrencyLevel, long time, TimeUnit unit) {
         isTrue(concurrencyLevel > 0);
@@ -49,7 +50,7 @@ public class AccessMonitor<K, V> {
      * Monitor tries to obtain the lock for specified period of time.
      * If the lock is not available TimeoutException is thrown
      *
-     * @param key key to lock on
+     * @param key  key to lock on
      * @param task task to execute
      * @return value of the operation
      * @throws InterruptedException
@@ -75,7 +76,7 @@ public class AccessMonitor<K, V> {
      * Execute task in safe manner: prevent race conditions
      * Operation won't throw checked exception. In case of lock accessing failure MonitorException is thrown
      *
-     * @param key key to lock on
+     * @param key  key to lock on
      * @param task task to execute
      * @return value of the operation
      * @throws MonitorException on lock acquiring failure
