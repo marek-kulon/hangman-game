@@ -29,7 +29,7 @@ public class AccessMonitor<K, V> {
 
 
     /**
-     * Create instance of ReadWriteMonitor
+     * Create instance of AccessMonitor
      *
      * @param concurrencyLevel number of thread expected to access protected section simultaneously
      * @param time             the maximum time to wait for obtaining the lock
