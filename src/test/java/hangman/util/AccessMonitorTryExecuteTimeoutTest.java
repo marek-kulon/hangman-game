@@ -31,7 +31,7 @@ public class AccessMonitorTryExecuteTimeoutTest extends MultithreadedTestCase {
 
     @Override
     public void initialize() {
-        monitor = new AccessMonitor(1, MONITOR_TIME, MILLISECONDS);
+        monitor = new AccessMonitor<>(1, MONITOR_TIME, MILLISECONDS);
     }
 
     /**
