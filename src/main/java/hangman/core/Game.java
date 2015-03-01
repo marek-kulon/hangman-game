@@ -4,10 +4,12 @@ import hangman.core.guess.Guess;
 import hangman.core.secret.Secret;
 import hangman.core.state.GameState;
 import hangman.core.state.GuessAlreadyMadeException;
-import org.apache.commons.lang3.Validate;
 
 import java.util.Collections;
 import java.util.Objects;
+
+import static org.apache.commons.lang3.Validate.isTrue;
+import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * @author Marek Kulon
@@ -29,8 +31,8 @@ public class Game {
      * @return created game object
      */
     public static Game newGame(int maxIncorrectGuessesNo, Secret secret) {
-        Validate.isTrue(maxIncorrectGuessesNo >= 0);
-        Validate.notNull(secret);
+        isTrue(maxIncorrectGuessesNo >= 0);
+        notNull(secret);
 
         GameState newGameState = GameState.newGameState(
                 maxIncorrectGuessesNo,
@@ -47,7 +49,7 @@ public class Game {
      * @throws GuessAlreadyMadeException if the same guess was already made
      */
     public boolean makeAGuess(Guess guess) throws GuessAlreadyMadeException {
-        Validate.notNull(guess);
+        notNull(guess);
 
         if (!GameStatus.IN_PROGRESS.equals(gameState.getGameStatus())) {
             return false;
@@ -64,7 +66,7 @@ public class Game {
      * @return created game object
      */
     public static Game of(GameState gameState) {
-        return new Game(Validate.notNull(gameState));
+        return new Game(notNull(gameState));
     }
 
     public GameState getGameState() {
