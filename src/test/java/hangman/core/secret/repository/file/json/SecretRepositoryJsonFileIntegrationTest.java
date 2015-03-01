@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNotNull;
 public class SecretRepositoryJsonFileIntegrationTest {
 
     @Autowired
-    SecretRepository secretRepository;
+    private SecretRepository secretRepository;
 
     @Test
     public void loadsFine() {
