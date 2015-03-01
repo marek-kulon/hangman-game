@@ -16,17 +16,17 @@ public class Game {
 
     private GameState gameState;
 
-    // private constructor
+    // do not expose - factory methods should be used instead
     private Game(GameState gameState) {
         this.gameState = gameState;
     }
 
     /**
-     * 'New Game' action
+     * New game action
      *
-     * @param maxIncorrectGuessesNo
-     * @param secret
-     * @return
+     * @param maxIncorrectGuessesNo maximum number of incorrect guesses user can make
+     * @param secret secret word to guess
+     * @return created game object
      */
     public static Game newGame(int maxIncorrectGuessesNo, Secret secret) {
         Validate.isTrue(maxIncorrectGuessesNo >= 0);
@@ -35,28 +35,16 @@ public class Game {
         GameState newGameState = GameState.newGameState(
                 maxIncorrectGuessesNo,
                 secret,
-                Collections.emptySet()); // no guesses
+                Collections.emptySet()); // no guesses at the beginning
         return new Game(newGameState);
     }
 
     /**
-     * Recreate game out of given state
+     * Make a guess action
      *
-     * @param gameState
-     * @return
-     */
-    public static Game of(GameState gameState) {
-        return new Game(Validate.notNull(gameState));
-    }
-
-    /**
-     * 'Make a guess' action
-     *
-     * @param guess
-     * @return true if:
-     * - game wasn't finished before
-     * - guess is right
-     * @throws GuessAlreadyMadeException
+     * @param guess the candidate guess value
+     * @return {@code true} if game wasn't finished before and the guess is correct
+     * @throws GuessAlreadyMadeException if the same guess was already made
      */
     public boolean makeAGuess(Guess guess) throws GuessAlreadyMadeException {
         Validate.notNull(guess);
@@ -67,6 +55,16 @@ public class Game {
 
         this.gameState = GameState.newGameStateWithGuess(gameState, guess);
         return guess.isCorrectFor(gameState.getSecret());
+    }
+
+    /**
+     * Creates a {@code Game} from the specified game state.
+     *
+     * @param gameState the candidate game state
+     * @return created game object
+     */
+    public static Game of(GameState gameState) {
+        return new Game(Validate.notNull(gameState));
     }
 
     public GameState getGameState() {
@@ -81,7 +79,8 @@ public class Game {
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        if (other == null || other.getClass() != getClass()) return false;
+        if (other == null) return false;
+        if (other.getClass() != getClass()) return false;
 
         return Objects.equals(this.getGameState(), ((Game) other).getGameState());
     }
@@ -92,9 +91,33 @@ public class Game {
     }
 
     /**
-     * Game can only by in one of listed states.
+     * A game can be in one of the following states:
+     * <ul>
+     * <li>{@link #IN_PROGRESS}<br>
+     *     Game is in progress
+     *     </li>
+     * <li>{@link #WON}<br>
+     *     User won the game
+     *     </li>
+     * <li>{@link #WON}<br>
+     *     User lost the game
+     *     </li>
+     * </ul>
      */
     public static enum GameStatus {
-        WON, LOST, IN_PROGRESS
+        /**
+         * Game status for a game that is still in progress
+         */
+        IN_PROGRESS,
+
+        /**
+         * Game status for a game won by user
+         */
+        WON,
+
+        /**
+         * Game status for a game lost by user
+         */
+        LOST
     }
 }
