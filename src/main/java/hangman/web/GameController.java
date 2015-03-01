@@ -1,23 +1,18 @@
 package hangman.web;
 
 import hangman.core.Game;
+import hangman.core.GameService;
+import hangman.core.GameService.IdGamePair;
 import hangman.core.guess.Guess;
 import hangman.core.secret.Secret;
-import hangman.core.secret.service.SecretService;
-import hangman.core.state.GameState;
 import hangman.core.state.GuessAlreadyMadeException;
-import hangman.core.state.repository.GameStateRepository;
-import hangman.core.state.repository.util.TokenGenerator;
-import hangman.util.AccessMonitor;
 import hangman.web.exception.GameNotFoundException;
 import hangman.web.exception.IllegalGuessValueException;
 import hangman.web.exception.IllegalMaxIncorrectGuessesNumberException;
 import hangman.web.exception.SecretCategoryNotSupportedException;
 import hangman.web.transfer.GameDTO;
-import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
@@ -25,9 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -41,21 +33,15 @@ public class GameController {
 
     private static final Logger log = LoggerFactory.getLogger(GameController.class);
 
-    // TODO add docs & externalize configuration
-    private static final AccessMonitor<String, Game> mainMonitor = new AccessMonitor<>(10, 2, TimeUnit.SECONDS);
-
-    @Autowired
-    private SecretService secretService;
-    @Autowired
-    private GameStateRepository gameStateRepository;
-
+    @javax.annotation.Resource(name = "gameServiceThreadSafe")
+    private GameService gameService;
 
     /**
      * Create new game
      *
-     * @param categoryName          name secret category
-     * @param maxIncorrectGuessesNo how many times user can make a wrong guess
-     * @return Generated game and its id
+     * @param categoryName          name of secret category
+     * @param maxIncorrectGuessesNo how many times user can make a incorrect guess
+     * @return created game and its id
      * @throws SecretCategoryNotSupportedException       category not supported by system
      * @throws IllegalMaxIncorrectGuessesNumberException
      */
@@ -77,19 +63,10 @@ public class GameController {
                     return new SecretCategoryNotSupportedException(categoryName);
                 });
 
+        final IdGamePair idGamePair = gameService.createGame(category, maxIncorrectGuessesNo);
 
-        final Secret newSecret = secretService.getRandomByCategory(category);
-        log.debug("generated secret: {}", newSecret);
-
-        final String token = TokenGenerator.generate();
-        log.debug("generated token: {}", token);
-
-        final Game newGame = Game.newGame(maxIncorrectGuessesNo, newSecret);
-
-        gameStateRepository.saveOrUpdate(token, newGame.getGameState()); // no need for mainMonitor here: new token -> no chance of race condition
-
-        GameDTO gameData = new GameDTO(newGame);
-        Link gameLink = new Link(token);
+        GameDTO gameData = new GameDTO(idGamePair.getGame());
+        Link gameLink = new Link(idGamePair.getGameId());
         return new Resource<>(gameData, gameLink);
     }
 
@@ -107,9 +84,14 @@ public class GameController {
     protected GameDTO load(@PathVariable("token") String token) {
         log.debug("received: {}", token);
 
-        final Supplier<Game> loadGameAction = () -> Game.of(loadGameState(token));
-        final Game game = mainMonitor.tryExecute(token, loadGameAction);
-        return new GameDTO(game);
+        Game loadedGame = gameService
+                .findGame(token)
+                .orElseThrow(() -> {
+                    log.warn("game not found: {}", token);
+                    return new GameNotFoundException(token);
+                });
+
+        return new GameDTO(loadedGame);
     }
 
 
@@ -134,34 +116,13 @@ public class GameController {
             throw new IllegalGuessValueException(value);
         }
 
-        final Guess guess = Guess.of(value);
-
-        final Supplier<Game> makeAGuessAction = () -> {
-            // get old game state from repository
-            final Game game = Game.of(loadGameState(token));
-            // perform guess operation
-            boolean isCorrect = game.makeAGuess(guess);
-            log.debug("isCorrect: {}", isCorrect);
-            // save result back to repository
-            gameStateRepository.saveOrUpdate(token, game.getGameState());
-            return game;
-        };
-
-        final Game gameAfterMadeGuess = mainMonitor.tryExecute(token, makeAGuessAction);
-        return new GameDTO(gameAfterMadeGuess);
-    }
-
-
-    private GameState loadGameState(String gameId) {
-        Validate.notNull(gameId);
-
-        GameState gameState = gameStateRepository
-                .find(gameId)
+        Game gameAfterMadeGuess = gameService
+                .makeAGuess(token, Guess.of(value))
                 .orElseThrow(() -> {
-                    log.warn("game not found: {}", gameId);
-                    return new GameNotFoundException(gameId);
+                    log.warn("game not found: {}", token);
+                    return new GameNotFoundException(token);
                 });
 
-        return gameState;
+        return new GameDTO(gameAfterMadeGuess);
     }
 }
