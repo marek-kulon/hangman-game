@@ -2,6 +2,9 @@ spring:
     profiles.active: live
     thymeleaf.cache: false
     main.show-banner: false
+access.monitor:
+    concurrency-level: 10
+    time-in-seconds: 2
 
 ---
 
