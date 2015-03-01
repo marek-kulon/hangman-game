@@ -101,7 +101,7 @@ public class Game {
      * <li>{@link #WON}<br>
      *     User won the game
      *     </li>
-     * <li>{@link #WON}<br>
+     * <li>{@link #LOST}<br>
      *     User lost the game
      *     </li>
      * </ul>
