@@ -92,7 +92,7 @@ public class Game {
     }
 
     /**
-     * Game can only by in one of the listed states.
+     * Game can only by in one of listed states.
      */
     public static enum GameStatus {
         WON, LOST, IN_PROGRESS
