@@ -1,11 +1,13 @@
 package hangman.core.secret;
 
 import hangman.core.guess.Guess;
-import org.apache.commons.lang3.Validate;
 
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Stream;
+
+import static org.apache.commons.lang3.Validate.notBlank;
+import static org.apache.commons.lang3.Validate.notNull;
 
 public final class Secret implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -15,7 +17,6 @@ public final class Secret implements Serializable {
 
     /** Unmodifiable set of allowed characters */
     public static final Set<Character> ALLOWED_CHARACTERS;
-
     static {
         Set<Character> alphas = new HashSet<>();
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().forEach(ci -> alphas.add((char) ci));
@@ -25,27 +26,13 @@ public final class Secret implements Serializable {
     private final String value;
     private final Category category;
 
-    public String getValue() {
-        return value;
-    }
+    // do not expose - use factory methods instead
+    private Secret(String value, Category category) {
+        notBlank(value);
+        notNull(category);
 
-    public Category getCategory() {
-        return category;
-    }
-
-    /**
-     * @return how many guess does it take to know the secret
-     */
-    public long getGuessesToKnowMeNo() {
-        return getValue().chars()
-                .filter(c -> Guess.isValidGuessCharacter((char) c)) // space separators
-                .mapToObj(c -> Guess.of((char) c))
-                .distinct()
-                .count();
-    }
-
-    public static boolean isValidSecretCharacter(char value) {
-        return value == SPACE_SEPARATOR || ALLOWED_CHARACTERS.contains(value);
+        this.value = value;
+        this.category = category;
     }
 
     /**
@@ -59,13 +46,27 @@ public final class Secret implements Serializable {
         return new Secret(value, category);
     }
 
-    // private constructor
-    private Secret(String value, Category category) {
-        Validate.notBlank(value);
-        Validate.notNull(category);
+    public String getValue() {
+        return value;
+    }
 
-        this.value = value;
-        this.category = category;
+    public Category getCategory() {
+        return category;
+    }
+
+    public static boolean isValidSecretCharacter(char value) {
+        return value == SPACE_SEPARATOR || ALLOWED_CHARACTERS.contains(value);
+    }
+
+    /**
+     * @return how many guess does it take to know the secret
+     */
+    public long getGuessesToKnowMeNo() {
+        return getValue().chars()
+                .filter(c -> Guess.isValidGuessCharacter((char) c)) // space separators
+                .mapToObj(c -> Guess.of((char) c))
+                .distinct()
+                .count();
     }
 
     @Override
@@ -83,25 +84,29 @@ public final class Secret implements Serializable {
         return Objects.equals(this.category, other.category) && Objects.equals(this.value, other.value);
     }
 
+    @Override
+    public String toString() {
+        return String.format("Secret [value=%s, category=%s]", value, category);
+    }
+
 
     /**
-     * Available categories
+     * Available categories of secrets.
      */
     public static enum Category {
         ANIMALS, FRUITS, VEGETABLES;
 
+        /**
+         * Finds {@code Category} by its name ignoring case considerations.
+         *
+         * @param value the {@code String} to compare to name of {@code Category}
+         */
         public static Optional<Category> getByNameIgnoreCase(final String value) {
-            Validate.notNull(value);
+            notNull(value);
 
             return Stream.of(Category.values())
                     .filter(category -> category.name().equalsIgnoreCase(value))
                     .findAny();
         }
-    }
-
-
-    @Override
-    public String toString() {
-        return String.format("Secret [value=%s, category=%s]", value, category);
     }
 }
