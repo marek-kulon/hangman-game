@@ -7,8 +7,8 @@ import hangman.core.guess.Guess;
 import hangman.core.secret.Secret;
 import hangman.core.state.GuessAlreadyMadeException;
 import hangman.web.exception.GameNotFoundException;
-import hangman.web.exception.IllegalGuessValueException;
 import hangman.web.exception.IllegalAllowedIncorrectGuessesNumberException;
+import hangman.web.exception.IllegalGuessValueException;
 import hangman.web.exception.SecretCategoryNotSupportedException;
 import hangman.web.transfer.GameDTO;
 import org.slf4j.Logger;
@@ -39,11 +39,11 @@ public class GameController {
     /**
      * Create new game
      *
-     * @param categoryName          name of secret category
+     * @param categoryName              name of secret category
      * @param allowedIncorrectGuessesNo how many times user can make a incorrect guess before loosing game
      * @return created game and its id
-     * @throws SecretCategoryNotSupportedException       category not supported by system
-     * @throws hangman.web.exception.IllegalAllowedIncorrectGuessesNumberException
+     * @throws SecretCategoryNotSupportedException           if category not supported by system
+     * @throws IllegalAllowedIncorrectGuessesNumberException if provided value is illegal
      */
     @RequestMapping(value = "/new-game/{category}/{allowedIncorrectGuessesNo}", method = POST, produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
