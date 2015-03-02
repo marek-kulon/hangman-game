@@ -49,9 +49,9 @@ public class GameDTO {
             this.gameState = gameState;
         }
 
-        @JsonProperty("maxIncorrectGuessesNo")
-        public int getMaxIncorrectGuessesNo() {
-            return gameState.getMaxIncorrectGuessesNo();
+        @JsonProperty("allowedIncorrectGuessesNo")
+        public int getAllowedIncorrectGuessesNo() {
+            return gameState.getAllowedIncorrectGuessesNo();
         }
 
         @JsonProperty("category")

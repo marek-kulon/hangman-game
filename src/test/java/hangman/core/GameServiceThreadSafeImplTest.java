@@ -49,7 +49,7 @@ public class GameServiceThreadSafeImplTest {
         // invoke original supplier method
         when(mainMonitor.tryExecute(any(), any())).thenAnswer(
                 invocation -> {
-                    Supplier<Optional<Game>> originalSupplier = invocation.getArgumentAt(1, Supplier.class);
+                    Supplier originalSupplier = invocation.getArgumentAt(1, Supplier.class);
                     return originalSupplier.get();
                 }
         );

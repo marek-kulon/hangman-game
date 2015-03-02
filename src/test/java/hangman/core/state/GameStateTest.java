@@ -58,11 +58,11 @@ public class GameStateTest {
         assertTrue("equals: is transitive", gsOne.equals(gsTwo) && gsTwo.equals(gsThree) && gsOne.equals(gsThree));
         assertTrue("equals: is consistent", gsOne.equals(gsTwo) && gsOne.equals(gsTwo));
 
-        GameState gsElevenMaxIncorrect = GameState.newGameState(11, SECRET_ANIMAL, Collections.emptySet());
+        GameState gsElevenAllowedIncorrect = GameState.newGameState(11, SECRET_ANIMAL, Collections.emptySet());
         GameState gsFruit = GameState.newGameState(10, SECRET_FRUIT, Collections.emptySet());
         GameState gsAGuess = GameState.newGameState(10, SECRET_ANIMAL, Sets.newHashSet(GUESS_A));
 
-        assertFalse(gsOne.equals(gsElevenMaxIncorrect));
+        assertFalse(gsOne.equals(gsElevenAllowedIncorrect));
         assertFalse(gsOne.equals(gsFruit));
         assertFalse(gsOne.equals(gsAGuess));
 

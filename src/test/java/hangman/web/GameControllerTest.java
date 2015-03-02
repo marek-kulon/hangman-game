@@ -47,7 +47,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void newGameIncorrectMaxIncorrectGuessesNoParameter() throws Exception {
+    public void newGameIncorrectAllowedIncorrectGuessesNoParameter() throws Exception {
         mockMvc.perform(post("/game/new-game/animals/-1").accept(APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
@@ -59,7 +59,7 @@ public class GameControllerTest {
                 .andExpect(content().contentType(APPLICATION_JSON))
                         // state
                 .andExpect(jsonPath("$.state.category").value("fruits"))
-                .andExpect(jsonPath("$.state.maxIncorrectGuessesNo").value(10))
+                .andExpect(jsonPath("$.state.allowedIncorrectGuessesNo").value(10))
                 .andExpect(jsonPath("$.state.correctGuessesNo").value(0))
                 .andExpect(jsonPath("$.state.incorrectGuessesNo").value(0))
                 .andExpect(jsonPath("$.state.status").value("IN_PROGRESS"))
@@ -83,14 +83,14 @@ public class GameControllerTest {
 
     @Test
     public void loadCorrectToken() throws Exception {
-        final String token = createNewGame("animals", 11);
+        final String token = createNewGame("animals", 10);
 
         // load game
         mockMvc.perform(get("/game/load/" + token).accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andExpect(jsonPath("$.state.category").value("animals"))
-                .andExpect(jsonPath("$.state.maxIncorrectGuessesNo").value(11));
+                .andExpect(jsonPath("$.state.allowedIncorrectGuessesNo").value(10));
     }
 
 
@@ -173,8 +173,8 @@ public class GameControllerTest {
      * @return game token
      * @throws Exception
      */
-    private String createNewGame(String category, int maxIncorrectGuessesNo) throws Exception {
-        MvcResult result = mockMvc.perform(post("/game/new-game/" + category + "/" + maxIncorrectGuessesNo).accept(APPLICATION_JSON))
+    private String createNewGame(String category, int allowedIncorrectGuessesNo) throws Exception {
+        MvcResult result = mockMvc.perform(post("/game/new-game/" + category + "/" + allowedIncorrectGuessesNo).accept(APPLICATION_JSON))
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         System.out.println(content);

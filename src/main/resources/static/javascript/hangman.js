@@ -21,7 +21,7 @@ var consoleUtils = (function() {
  * Library injects hangman object into global scope.
  * Use this object to interact with the user. Main operations are:
  * - guess(value, callbacks)
- * - newGame(maxIncorrectGuessesNo, category, callbacks) 
+ * - newGame(allowedIncorrectGuessesNo, category, callbacks) 
  * - load(token, callbacks)
  * - abortAllOperations()
  * - state.* - object containing various methods related to state of the game (@see hangman.state for more details)
@@ -180,7 +180,7 @@ hangman = (function($) {
 	/**
 	 * Generate new game. Operation is ignored if another request is pending
 	 * 
-	 * @param maxIncorrectGuessesNo - maximum number of user incorrect guesses
+	 * @param allowedIncorrectGuessesNo - number of allowed incorrect guesses user can make before losing game
 	 * @param category - category of the game (eg animals, movies)
 	 * @param callbacks
 	 * 	- before() [optional]
@@ -188,15 +188,15 @@ hangman = (function($) {
 	 * 	- failure(errorMessage) [optional] - accepts error message 
 	 * 	- after() [optional]
 	 */
-	fn.newGame = function(maxIncorrectGuessesNo, category, callbacks) {
-		if ($.type(maxIncorrectGuessesNo) !== 'number') throw new Error('illegal argument');
+	fn.newGame = function(allowedIncorrectGuessesNo, category, callbacks) {
+		if ($.type(allowedIncorrectGuessesNo) !== 'number') throw new Error('illegal argument');
 		if ($.type(category) !== 'string') throw new Error('illegal argument');
 		if (!callbacks || !$.isFunction(callbacks.success)) throw new Error('illegal argument');
 		
-		consoleUtils.log('newGame, maxIncorrectGuessesNo: '+maxIncorrectGuessesNo+', category: '+category);
+		consoleUtils.log('newGame, allowedIncorrectGuessesNo: '+allowedIncorrectGuessesNo+', category: '+category);
 		
 		ajaxRequest = requestServer(
-			window.ctx+'/game/new-game/'+category+'/'+maxIncorrectGuessesNo, 		// url
+			window.ctx+'/game/new-game/'+category+'/'+allowedIncorrectGuessesNo, 	// url
 			{																		// callbacks: new object, decorated success callback
 				before: callbacks.before,
 				success: function(response){
@@ -284,12 +284,12 @@ hangman = (function($) {
 			return data.state.category;
 		},
 		
-		getMaxIncorrectGuessesNo: function() {
+		getAllowedIncorrectGuessesNo: function() {
 			if (!fn.state.isLoaded()) {
 				return 0;
 			}
 			
-			return data.state.maxIncorrectGuessesNo;
+			return data.state.allowedIncorrectGuessesNo;
 		},
 		
 		getCorrectGuessesNo: function() {

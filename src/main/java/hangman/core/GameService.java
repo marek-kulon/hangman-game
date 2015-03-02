@@ -15,11 +15,11 @@ public interface GameService {
     /**
      * Creates new game, generates its id and saves game in repository.
      *
-     * @param category              category of a secret eg. ANIMALS, FRUITS
-     * @param maxIncorrectGuessesNo maximum number or incorrect guesses user can make
+     * @param category              category of a secret
+     * @param allowedIncorrectGuessesNo maximum number or incorrect guesses user can make before losing game
      * @return pair of values: game id, game
      */
-    IdGamePair createGame(Secret.Category category, int maxIncorrectGuessesNo);
+    IdGamePair createGame(Secret.Category category, int allowedIncorrectGuessesNo);
 
     /**
      * Finds game in repository

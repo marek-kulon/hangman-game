@@ -8,7 +8,7 @@ import hangman.core.secret.Secret;
 import hangman.core.state.GuessAlreadyMadeException;
 import hangman.web.exception.GameNotFoundException;
 import hangman.web.exception.IllegalGuessValueException;
-import hangman.web.exception.IllegalMaxIncorrectGuessesNumberException;
+import hangman.web.exception.IllegalAllowedIncorrectGuessesNumberException;
 import hangman.web.exception.SecretCategoryNotSupportedException;
 import hangman.web.transfer.GameDTO;
 import org.slf4j.Logger;
@@ -40,20 +40,21 @@ public class GameController {
      * Create new game
      *
      * @param categoryName          name of secret category
-     * @param maxIncorrectGuessesNo how many times user can make a incorrect guess
+     * @param allowedIncorrectGuessesNo how many times user can make a incorrect guess before loosing game
      * @return created game and its id
      * @throws SecretCategoryNotSupportedException       category not supported by system
-     * @throws IllegalMaxIncorrectGuessesNumberException
+     * @throws hangman.web.exception.IllegalAllowedIncorrectGuessesNumberException
      */
-    @RequestMapping(value = "/new-game/{category}/{maxIncorrectGuessesNo}", method = POST, produces = "application/json")
+    @RequestMapping(value = "/new-game/{category}/{allowedIncorrectGuessesNo}", method = POST, produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     protected Resource<GameDTO> newGame(
             @PathVariable("category") String categoryName,
-            @PathVariable("maxIncorrectGuessesNo") Integer maxIncorrectGuessesNo) {
+            @PathVariable("allowedIncorrectGuessesNo") Integer allowedIncorrectGuessesNo) {
 
-        if (maxIncorrectGuessesNo < 0) {
-            log.warn("incorrect maxIncorrectGuessesNo value: {}", maxIncorrectGuessesNo);
-            throw new IllegalMaxIncorrectGuessesNumberException(maxIncorrectGuessesNo);
+        if (allowedIncorrectGuessesNo < 0) {
+            log.warn("incorrect allowedIncorrectGuessesNo value: {}", allowedIncorrectGuessesNo);
+            throw new IllegalAllowedIncorrectGuessesNumberException(allowedIncorrectGuessesNo);
+
         }
 
         final Secret.Category category = Secret.Category
@@ -63,7 +64,7 @@ public class GameController {
                     return new SecretCategoryNotSupportedException(categoryName);
                 });
 
-        final IdGamePair idGamePair = gameService.createGame(category, maxIncorrectGuessesNo);
+        final IdGamePair idGamePair = gameService.createGame(category, allowedIncorrectGuessesNo);
 
         GameDTO gameData = new GameDTO(idGamePair.getGame());
         Link gameLink = new Link(idGamePair.getGameId());

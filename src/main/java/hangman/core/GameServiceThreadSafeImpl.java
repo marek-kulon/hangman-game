@@ -28,15 +28,15 @@ public class GameServiceThreadSafeImpl implements GameService {
     /**
      * Creates new game, generates its id and saves game in repository.
      *
-     * @param category              category of a secret eg. ANIMALS, FRUITS
-     * @param maxIncorrectGuessesNo maximum number or incorrect guesses user can make
+     * @param category              category of a secret
+     * @param allowedIncorrectGuessesNo maximum number or incorrect guesses user can make
      * @return pair of values: game id, game
      * @see GameService#createGame(hangman.core.secret.Secret.Category, int)
      */
     @Override
-    public IdGamePair createGame(Secret.Category category, int maxIncorrectGuessesNo) {
+    public IdGamePair createGame(Secret.Category category, int allowedIncorrectGuessesNo) {
         // no need for wrapping code in access monitor here - no race conditions, no 'read/modify/write'
-        return gameService.createGame(category, maxIncorrectGuessesNo);
+        return gameService.createGame(category, allowedIncorrectGuessesNo);
     }
 
     /**

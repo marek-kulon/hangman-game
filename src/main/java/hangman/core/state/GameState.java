@@ -21,50 +21,56 @@ import static hangman.core.Game.GameStatus.*;
 public final class GameState implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    /** Maximum number of incorrect guesses */
-    private final int maxIncorrectGuessesNo;
+    /** Number of allowed incorrect guesses */
+    private final int allowedIncorrectGuessesNo;
+
     /** Secret word to guess */
     private final Secret secret;
-    /**  All guesses user has made so far */
+
+    /**
+     * All guesses user has made so far.
+     * Set is unmodifiable
+     */
     private final Set<Guess> guesses;
 
-    /*
-     *  Private constructor
-     *  Set of guesses is unmodifiable. Better solution would be
-     *  a set collection without 'add', 'remove', 'clear' methods in its API
-     */
-    private GameState(int maxIncorrectGuessesNo, Secret secret, Set<Guess> guesses) {
-        this.maxIncorrectGuessesNo = maxIncorrectGuessesNo;
+
+    // do not expose - use factory methods instead
+    private GameState(int allowedIncorrectGuessesNo, Secret secret, Set<Guess> guesses) {
+        this.allowedIncorrectGuessesNo = allowedIncorrectGuessesNo;
         this.secret = secret;
         this.guesses = Collections.unmodifiableSet(guesses); // make sure is immutable
 
         // post construct: validate incorrect guesses number in relation to maximum allowed value
-        if (getMaxIncorrectGuessesNo() != 0 && getIncorrectGuessesNo() > getMaxIncorrectGuessesNo()) {
-            throw new IllegalGameStateException("Number of incorrect guesses is grater than maximum allowed value");
+        if (getIncorrectGuessesNo() > getAllowedIncorrectGuessesNo()+1) {
+            throw new IllegalGameStateException("Number of incorrect guesses is grater than allowed value");
         }
     }
 
     /**
-     * @param maxIncorrectGuessesNo
-     * @param secret
-     * @param guesses
-     * @return
+     * Creates a new object of {@code GameState} from the specified parameters.
+     *
+     * @param allowedIncorrectGuessesNo maximum allowed number of incorrect guesses user can make before losing game
+     * @param secret value to guess
+     * @param guesses currently made guesses
+     * @return created object
      */
-    public static GameState newGameState(int maxIncorrectGuessesNo, Secret secret, Set<Guess> guesses) {
-        Validate.isTrue(maxIncorrectGuessesNo >= 0);
+    public static GameState newGameState(int allowedIncorrectGuessesNo, Secret secret, Set<Guess> guesses) {
+        Validate.isTrue(allowedIncorrectGuessesNo >= 0);
         Validate.notNull(secret);
         Validate.noNullElements(guesses);
 
-        return new GameState(maxIncorrectGuessesNo,
+        return new GameState(allowedIncorrectGuessesNo,
                 secret,
                 guesses);
     }
 
     /**
-     * @param oldGameState
-     * @param value
-     * @return
-     * @throws GuessAlreadyMadeException
+     * Creates a new object of {@code GameState} from the specified game state and guess value.
+     *
+     * @param oldGameState the candidate game state
+     * @param value guess value
+     * @return created object
+     * @throws GuessAlreadyMadeException if guess was already made by user
      */
     public static GameState newGameStateWithGuess(GameState oldGameState, Guess value) {
         Validate.notNull(oldGameState);
@@ -79,7 +85,7 @@ public final class GameState implements Serializable {
         newGuesses.add(value);
 
         return new GameState(
-                oldGameState.getMaxIncorrectGuessesNo(),
+                oldGameState.getAllowedIncorrectGuessesNo(),
                 oldGameState.getSecret(),
                 newGuesses);
     }
@@ -101,15 +107,13 @@ public final class GameState implements Serializable {
     }
 
     /**
-     * Calculate status/progress of the game based on its current state
+     * Calculate status of the game based on its current state
      *
-     * @return calculated state
+     * @return calculated status
      */
     public GameStatus getGameStatus() {
-        final long incorrectGuessesNo = getIncorrectGuessesNo();
-
-        // users incorrect guesses number >= maximum value
-        if (incorrectGuessesNo > 0 && incorrectGuessesNo >= getMaxIncorrectGuessesNo()) {
+        // users incorrect guesses number > maximum allowed value
+        if (getIncorrectGuessesNo() > getAllowedIncorrectGuessesNo()) {
             return LOST;
         }
         // number of correct guesses made by user == number of guesses it takes to know the secret
@@ -120,8 +124,8 @@ public final class GameState implements Serializable {
         return IN_PROGRESS;
     }
 
-    public int getMaxIncorrectGuessesNo() {
-        return maxIncorrectGuessesNo;
+    public int getAllowedIncorrectGuessesNo() {
+        return allowedIncorrectGuessesNo;
     }
 
     public Secret getSecret() {
@@ -138,7 +142,7 @@ public final class GameState implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(maxIncorrectGuessesNo, secret, guesses);
+        return Objects.hash(allowedIncorrectGuessesNo, secret, guesses);
     }
 
     @Override
@@ -148,13 +152,13 @@ public final class GameState implements Serializable {
         if (obj.getClass() != getClass()) return false;
 
         GameState other = (GameState) obj;
-        return Objects.equals(this.maxIncorrectGuessesNo, other.maxIncorrectGuessesNo)
+        return Objects.equals(this.allowedIncorrectGuessesNo, other.allowedIncorrectGuessesNo)
                 && Objects.equals(this.secret, other.secret)
                 && Objects.equals(this.guesses, other.guesses);
     }
 
     @Override
     public String toString() {
-        return String.format("GameState [maxIncorrectGuessesNo=%s, secret=%s, guesses=%s]", maxIncorrectGuessesNo, secret, guesses);
+        return String.format("GameState [allowedIncorrectGuessesNo=%s, secret=%s, guesses=%s]", allowedIncorrectGuessesNo, secret, guesses);
     }
 }

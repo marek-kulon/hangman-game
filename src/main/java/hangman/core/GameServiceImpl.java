@@ -39,14 +39,14 @@ public class GameServiceImpl implements GameService {
      * Game secret is randomly generated out of values found in secrets repository.
      * Game id value is a randomly generated string.
      *
-     * @param category              category of a secret eg. ANIMALS, FRUITS
-     * @param maxIncorrectGuessesNo maximum number or incorrect guesses user can make
+     * @param category              category of a secret
+     * @param allowedIncorrectGuessesNo maximum number or incorrect guesses user can make before losing game
      * @return pair of values: game id, game
      */
     @Override
-    public IdGamePair createGame(Secret.Category category, int maxIncorrectGuessesNo) {
+    public IdGamePair createGame(Secret.Category category, int allowedIncorrectGuessesNo) {
         notNull(category);
-        isTrue(maxIncorrectGuessesNo >= 0);
+        isTrue(allowedIncorrectGuessesNo >= 0);
 
         final List<Secret> secrets = secretRepository.findAllByCategory(category);
         if (secrets == null || secrets.isEmpty()) {
@@ -59,7 +59,7 @@ public class GameServiceImpl implements GameService {
         final String gameId = RandomStringUtils.randomAlphanumeric(32);
         log.debug("generated gameId: {}", gameId);
 
-        final Game newGame = Game.newGame(maxIncorrectGuessesNo, randomSecret);
+        final Game newGame = Game.newGame(allowedIncorrectGuessesNo, randomSecret);
         gameStateRepository.saveOrUpdate(gameId, newGame.getGameState());
 
         return new IdGamePair(gameId, newGame);

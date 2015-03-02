@@ -4,7 +4,7 @@ package hangman.web;
 import hangman.core.state.GuessAlreadyMadeException;
 import hangman.web.exception.GameNotFoundException;
 import hangman.web.exception.IllegalGuessValueException;
-import hangman.web.exception.IllegalMaxIncorrectGuessesNumberException;
+import hangman.web.exception.IllegalAllowedIncorrectGuessesNumberException;
 import hangman.web.exception.SecretCategoryNotSupportedException;
 import org.springframework.hateoas.VndErrors.VndError;
 import org.springframework.http.HttpStatus;
@@ -26,10 +26,10 @@ public class GameExceptionHandler {
         return new VndError("1", ex.getMessage());
     }
 
-    @ExceptionHandler(IllegalMaxIncorrectGuessesNumberException.class)
+    @ExceptionHandler(IllegalAllowedIncorrectGuessesNumberException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
-    VndError onIllegalMaxIncorrectGuessesNumber(IllegalMaxIncorrectGuessesNumberException ex) {
+    VndError onIllegalAllowedIncorrectGuessesNumber(IllegalAllowedIncorrectGuessesNumberException ex) {
         return new VndError("2", ex.getMessage());
     }
 

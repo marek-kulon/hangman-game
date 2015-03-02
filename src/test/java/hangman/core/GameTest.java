@@ -21,22 +21,22 @@ public class GameTest {
 
     @Before
     public void setUp() {
-        game = Game.newGame(2, SECRET_ANIMAL);
+        game = Game.newGame(1, SECRET_ANIMAL);
     }
 
     @Test
     public void makeAGuessLower() throws GuessAlreadyMadeException {
-        assertTrue("lower", game.makeAGuess(Guess.of('d')));
+        assertTrue("correct lower", game.makeAGuess(Guess.of('d')));
     }
 
     @Test
     public void makeAGuessUpper() throws GuessAlreadyMadeException {
-        assertTrue(game.makeAGuess(Guess.of('O')));
+        assertTrue("correct upper", game.makeAGuess(Guess.of('O')));
     }
 
     @Test
     public void makeAGuessWrong() throws GuessAlreadyMadeException {
-        assertFalse("wrong", game.makeAGuess(Guess.of('z')));
+        assertFalse("incorrect", game.makeAGuess(Guess.of('z')));
     }
 
     @Test
@@ -56,14 +56,14 @@ public class GameTest {
 
     @Test
     public void newGame() throws GuessAlreadyMadeException {
-        assertEquals(0, Game.newGame(2, Secret.of("dog", Category.ANIMALS)).getGameState().getGuesses().size());
+        assertEquals(0, Game.newGame(1, Secret.of("dog", Category.ANIMALS)).getGameState().getGuesses().size());
     }
 
     @Test
     public void restoreGame() throws GuessAlreadyMadeException {
-        Game g = Game.of(game.getGameState());
+        Game restoredGame = Game.of(game.getGameState());
 
-        assertEquals(g.getGameState(), game.getGameState());
+        assertEquals(game, restoredGame);
     }
 
     @Test

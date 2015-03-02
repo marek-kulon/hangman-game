@@ -26,16 +26,16 @@ public class Game {
     /**
      * New game action
      *
-     * @param maxIncorrectGuessesNo maximum number of incorrect guesses user can make
+     * @param allowedIncorrectGuessesNo maximum allowed number of incorrect guesses user can make before losing game
      * @param secret secret word to guess
      * @return created game object
      */
-    public static Game newGame(int maxIncorrectGuessesNo, Secret secret) {
-        isTrue(maxIncorrectGuessesNo >= 0);
+    public static Game newGame(int allowedIncorrectGuessesNo, Secret secret) {
+        isTrue(allowedIncorrectGuessesNo >= 0);
         notNull(secret);
 
         GameState newGameState = GameState.newGameState(
-                maxIncorrectGuessesNo,
+                allowedIncorrectGuessesNo,
                 secret,
                 Collections.emptySet()); // no guesses at the beginning
         return new Game(newGameState);
@@ -79,12 +79,13 @@ public class Game {
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (this == other) return true;
-        if (other == null) return false;
-        if (other.getClass() != getClass()) return false;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (obj.getClass() != getClass()) return false;
 
-        return Objects.equals(this.getGameState(), ((Game) other).getGameState());
+        Game other = (Game) obj;
+        return Objects.equals(this.getGameState(), other.getGameState());
     }
 
     @Override
