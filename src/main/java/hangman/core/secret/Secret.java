@@ -36,11 +36,11 @@ public final class Secret implements Serializable {
     }
 
     /**
-     * Returns a {@code Secret} of a specified not-blank value and not-null category
+     * Returns a {@link Secret} of a specified not-blank value and not-null category
      *
      * @param value    value to guess
      * @param category category of secret
-     * @return newly created {@code Secret}
+     * @return newly created {@link Secret}
      */
     public static Secret of(String value, Category category) {
         return new Secret(value, category);
@@ -97,9 +97,9 @@ public final class Secret implements Serializable {
         ANIMALS, FRUITS, VEGETABLES;
 
         /**
-         * Finds {@code Category} by its name ignoring case considerations.
+         * Finds {@link Category} by its name ignoring case considerations.
          *
-         * @param value the {@code String} to compare to name of {@code Category}
+         * @param value the {@link String} to compare to name of {@link Category}
          */
         public static Optional<Category> getByNameIgnoreCase(final String value) {
             notNull(value);

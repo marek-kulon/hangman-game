@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class GameTest {
 
     private static final Secret SECRET_ANIMAL = Secret.of("dog", Category.ANIMALS);
-    private static final Secret SECRET_FRUIT= Secret.of("apple", Category.FRUITS);
+    private static final Secret SECRET_FRUIT = Secret.of("apple", Category.FRUITS);
 
     private Game game;
 
@@ -68,9 +68,9 @@ public class GameTest {
 
     @Test
     public void equalsAndHashCode() {
-        Game gOne = Game.newGame(10, Secret.of("dog", Category.ANIMALS));
+        Game gOne = Game.newGame(10, SECRET_ANIMAL);
         Game gTwo = Game.of(GameState.newGameState(10, SECRET_ANIMAL, Collections.emptySet()));
-        Game gThree = Game.newGame(10, Secret.of("dog", Category.ANIMALS));
+        Game gThree = Game.newGame(10, SECRET_ANIMAL);
 
         // equals
         assertFalse("equals: null", gOne.equals(null));

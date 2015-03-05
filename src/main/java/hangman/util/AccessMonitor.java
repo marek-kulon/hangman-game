@@ -13,7 +13,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 
 
 /**
- * Monitor protecting code from race conditions by utilizing ReentrantLock.
+ * Monitor protecting code from race conditions by utilizing {@link java.util.concurrent.locks.ReentrantLock}.
  * Available configuration options are:
  * - concurrencyLevel: number of threads accessing critical section at the same time,
  * - time: maximum time to wait for access to critical section,
@@ -29,7 +29,7 @@ public class AccessMonitor<K, V> {
 
 
     /**
-     * Create instance of AccessMonitor
+     * Create instance of object
      *
      * @param concurrencyLevel number of thread expected to access protected section simultaneously
      * @param time             the maximum time to wait for obtaining the lock
@@ -48,7 +48,7 @@ public class AccessMonitor<K, V> {
     /**
      * Execute task in safe manner: prevents race conditions
      * Monitor tries to obtain the lock for specified period of time.
-     * If the lock is not available TimeoutException is thrown
+     * If the lock is not available {@link TimeoutException} is thrown
      *
      * @param key  key to lock on
      * @param task task to execute
@@ -74,7 +74,7 @@ public class AccessMonitor<K, V> {
 
     /**
      * Execute task in safe manner: prevent race conditions
-     * Operation won't throw checked exception. In case of lock accessing failure MonitorException is thrown
+     * Operation won't throw checked exception. In case of lock accessing failure {@link MonitorException} is thrown
      *
      * @param key  key to lock on
      * @param task task to execute

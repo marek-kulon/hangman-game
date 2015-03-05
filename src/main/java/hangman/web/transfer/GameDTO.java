@@ -14,8 +14,8 @@ import java.util.Set;
 import static java.util.stream.Collectors.toSet;
 
 /**
- * Game Data Transfer Object
- * Contains:
+ * Game Data Transfer Object. JSON representation of {@link hangman.core.Game}
+ * Transformed object contains information about:
  * - game state
  * - guess word
  *

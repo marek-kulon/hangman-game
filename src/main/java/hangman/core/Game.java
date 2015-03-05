@@ -60,7 +60,7 @@ public class Game {
     }
 
     /**
-     * Creates a {@code Game} from the specified game state.
+     * Creates a {@link Game} from the specified game state.
      *
      * @param gameState the candidate game state
      * @return created game object

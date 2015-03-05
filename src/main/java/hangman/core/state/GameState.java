@@ -47,7 +47,7 @@ public final class GameState implements Serializable {
     }
 
     /**
-     * Creates a new object of {@code GameState} from the specified parameters.
+     * Creates a new object of {@link GameState} from the specified parameters.
      *
      * @param allowedIncorrectGuessesNo maximum allowed number of incorrect guesses user can make before losing game
      * @param secret value to guess
@@ -65,7 +65,7 @@ public final class GameState implements Serializable {
     }
 
     /**
-     * Creates a new object of {@code GameState} from the specified game state and guess value.
+     * Creates a new object of {@link GameState} from the specified game state and guess value.
      *
      * @param oldGameState the candidate game state
      * @param value guess value

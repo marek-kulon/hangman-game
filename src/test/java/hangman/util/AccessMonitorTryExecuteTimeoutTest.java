@@ -11,7 +11,8 @@ import java.util.concurrent.TimeoutException;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
- * Test AccessMonitor.tryExecute(K, Supplier<V>)) blocks access for the same key and throws MonitorException on entering monitor
+ * Test {@link AccessMonitor#tryExecute(java.lang.Object, java.util.function.Supplier)} blocks access for the same key
+ * and throws {@link AccessMonitor.MonitorException} on entering monitor
  * Scenario:
  * - thread 1 enters monitor and executes long-running job (where job time > monitor acquiring timeout),
  * - thread 2 tries to enter monitor and execute its job
@@ -19,7 +20,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * - thread 1 executes fine
  * - thread 2 receives MonitorException of which cause was TimeoutException
  *
- * Instead of Thread.sleep()/CountDownLatch implementation uses MultithreadedTC for ordering threads
+ * Instead of {@link Thread#sleep(long)} or {@link java.util.concurrent.CountDownLatch} implementation uses MultithreadedTC for ordering threads
  */
 public class AccessMonitorTryExecuteTimeoutTest extends MultithreadedTestCase {
     private static final Logger log = LoggerFactory.getLogger(AccessMonitorTryExecuteTimeoutTest.class);
