@@ -1,14 +1,25 @@
 
 /**
- * console utilities = wrap window.log & window.warn as console doesn't always exist eg in old IEs
+ * Console utilities wraps window.log & window.warn functions as console doesn't always exist eg in old IEs
  */
 var consoleUtils = (function() {
 	"use strict";
 	
 	return {
+	    /**
+	     * Wraps console.log
+	     *
+	     * @param {*} message log message
+	     */
 		log: function(message) {
 			window.console && window.console.log && window.console.log(message);
 		},
+
+        /**
+         * Wraps console.warn
+         *
+         * @param {*} message warn message
+         */
 		warn: function(message) {
 			window.console && window.console.warn && window.console.warn(message);
 		}	
@@ -34,18 +45,18 @@ hangman = (function($) {
 	 * Send request to server
 	 * Function uses passed ajaxRequest object to prevent parallel requests
 	 * 
-	 * @param url - request url
-	 * @param callbacks
-	 * 	- before() [optional]
-	 * 	- success(response) - accepts response data
-	 * 	- failure(errorMessage) [optional] - accepts error message
-	 * 	- after() [optional]
-	 * @param ajaxRequest [optional] - requestServer function won't fire new request if ajaxRequest is still pending
-	 *	- instance of jqXHR
-	 * @param options [optional]
-	 * 	- type - default value is 'GET' 
-	 * 	- timeout - request timeout in ms, default value is 2500
-	 * @return jqXHR if request is executed, received ajaxRequest object otherwise
+	 * @param {string} url request url
+	 * @param {Object} callbacks
+	 * @param {function} [callbacks.before] executed before request
+	 * @param {function} callbacks.success executed on success, accepts response data
+	 * @param {function} [callbacks.failure] executed on failure, accepts error message
+	 * @param {function} {callbacks.function} [after] executed after request
+	 * @param {Object} [ajaxRequest] requestServer function won't fire new request if ajaxRequest is still pending.
+	 * Instance of jqXHR
+	 * @param {Object} [options]
+	 * @param {string} [options.type=GET] request method
+	 * @param {number} [options.timeout=2500] request timeout in ms
+	 * @returns {Object} jqXHR if request is executed, received ajaxRequest object otherwise
 	 */
 	function requestServer(url, callbacks, ajaxRequest, options) {
 		if ($.type(url) !== 'string') throw new Error('illegal argument'); // validation of public functions
@@ -105,7 +116,9 @@ hangman = (function($) {
 	
 	
 	/**
-	 * Check if argument is accepted as a guess ('a'-'z', 'A'-'Z' characters)
+	 * Checks if argument is accepted as a guess ('a'-'z', 'A'-'Z' characters)
+	 *
+	 * @param {string} value candidate value to check
 	 */
 	function isValidGuess(value) {
 		return $.type(value)==='string' && /^[a-zA-Z]$/.test(value);
@@ -132,12 +145,12 @@ hangman = (function($) {
 	/**
 	 * Execute a guess. Operation is ignored if game is not loaded/game is finished/another request is pending
 	 * 
-	 * @param value - guess received from user
-	 * @param callbacks
-	 * 	- before() [optional]
-	 * 	- success()
-	 * 	- failure(errorMessage) [optional] - accepts error message 
-	 * 	- after() [optional]
+	 * @param {string} value guess received from user
+     * @param {Object} callbacks
+     * @param {function} [callbacks.before] executed before request
+     * @param {function} callbacks.success executed on success, accepts response data
+     * @param {function} [callbacks.failure] executed on failure, accepts error message
+     * @param {function} {callbacks.function} [after] executed after request
 	 */
 	fn.guess = function(value, callbacks) {
 		if (!isValidGuess(value)) throw new Error('illegal argument');
@@ -180,13 +193,13 @@ hangman = (function($) {
 	/**
 	 * Generate new game. Operation is ignored if another request is pending
 	 * 
-	 * @param allowedIncorrectGuessesNo - number of allowed incorrect guesses user can make before losing game
-	 * @param category - category of the game (eg animals, movies)
-	 * @param callbacks
-	 * 	- before() [optional]
-	 * 	- success()
-	 * 	- failure(errorMessage) [optional] - accepts error message 
-	 * 	- after() [optional]
+	 * @param {number} allowedIncorrectGuessesNo number of allowed incorrect guesses user can make before losing game
+	 * @param {string} category category of the game (eg animals, movies)
+     * @param {Object} callbacks
+     * @param {function} [callbacks.before] executed before request
+     * @param {function} callbacks.success executed on success, accepts response data
+     * @param {function} [callbacks.failure] executed on failure, accepts error message
+     * @param {function} {callbacks.function} [after] executed after request
 	 */
 	fn.newGame = function(allowedIncorrectGuessesNo, category, callbacks) {
 		if ($.type(allowedIncorrectGuessesNo) !== 'number') throw new Error('illegal argument');
@@ -221,12 +234,12 @@ hangman = (function($) {
 	/**
 	 * Load data based on token. Operation is ignored if another request is pending
 	 * 
-	 * @param token
-	 * @param callbacks
-	 * 	- before() [optional]
-	 * 	- success()
-	 * 	- failure(errorMessage) [optional] - accepts error message 
-	 * 	- after() [optional]
+	 * @param {string} token
+     * @param {Object} callbacks
+     * @param {function} [callbacks.before] executed before request
+     * @param {function} callbacks.success executed on success, accepts response data
+     * @param {function} [callbacks.failure] executed on failure, accepts error message
+     * @param {function} {callbacks.function} [after] executed after request
 	 */
 	fn.load = function(token, callbacks) {
 		if ($.type(token) !== 'string') throw new Error('illegal argument');
@@ -257,17 +270,24 @@ hangman = (function($) {
 	fn.abortAllOperations = function() {
 		ajaxRequest && ajaxRequest.abort();
 	};
-	
+
+
 	
 	/**
 	 * Functions related to state of the game
 	 */
 	fn.state = {
-		
+
+		/**
+         * Is game state loaded
+         */
 		isLoaded: function() {
 			return !!data; // data is defined
 		},
-			
+
+		/**
+         * Returns game token
+         */
 		getToken: function() {
 			if (!fn.state.isLoaded()) {
 				return '';
@@ -275,7 +295,10 @@ hangman = (function($) {
 			
 			return data.token;
 		},
-			
+
+		/**
+         * Returns secret category
+         */
 		getCategory: function() {
 			if (!fn.state.isLoaded()) {
 				return '';
@@ -283,7 +306,10 @@ hangman = (function($) {
 			
 			return data.state.category;
 		},
-		
+
+		/**
+         * Returns number of allowed incorrect guesses
+         */
 		getAllowedIncorrectGuessesNo: function() {
 			if (!fn.state.isLoaded()) {
 				return 0;
@@ -291,7 +317,10 @@ hangman = (function($) {
 			
 			return data.state.allowedIncorrectGuessesNo;
 		},
-		
+
+		/**
+         * Returns number of correct guesses
+         */
 		getCorrectGuessesNo: function() {
 			if (!fn.state.isLoaded()) {
 				return 0;
@@ -299,7 +328,10 @@ hangman = (function($) {
 			
 			return data.state.correctGuessesNo;
 		},
-		
+
+		/**
+         * Returns number of incorrect guesses
+         */
 		getIncorrectGuessesNo: function() {
 			if (!fn.state.isLoaded()) {
 				return 0;
@@ -307,7 +339,10 @@ hangman = (function($) {
 			
 			return data.state.incorrectGuessesNo;
 		},
-		
+
+		/**
+         * Returns game status
+         */
 		getStatus: function() {
 			if (!fn.state.isLoaded()) {
 				return '';
@@ -315,7 +350,11 @@ hangman = (function($) {
 			
 			return data.state.status;
 		},
-		
+
+
+		/**
+		 * Returns guess word
+		 */
 		getGuessWord: function() {
 			if (!fn.state.isLoaded()) {
 				return '';
@@ -326,6 +365,8 @@ hangman = (function($) {
 			
 		/**
 		 * Check if letter is still available for guessing
+		 *
+		 * @param {string} letter the candidate letter
 		 */
 		isLetterAvailable: function(letter) {
 			if (!isValidGuess(letter)) throw new Error('illegal argument');

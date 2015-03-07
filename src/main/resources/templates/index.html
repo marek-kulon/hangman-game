@@ -201,7 +201,7 @@
 		$(function() {
 			
 			/*
-			 * update view based on hangman.state
+			 * Updates view based on hangman.state
 			 */
 			function syncViewWithModel() {	
 				var i, guessWord = hangman.state.getGuessWord();
@@ -244,7 +244,7 @@
 			}
 			
 			/*
-			 * display notification about error
+			 * Display notification about error
 			 */
 			function displayErrorAlert(errorMsg) {
 				var id = 'alert'+new Date().getTime(); // should be unique enough
