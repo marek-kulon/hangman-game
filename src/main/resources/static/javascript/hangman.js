@@ -50,7 +50,7 @@ hangman = (function($) {
 	 * @param {function} [callbacks.before] executed before request
 	 * @param {function} callbacks.success executed on success, accepts response data
 	 * @param {function} [callbacks.failure] executed on failure, accepts error message
-	 * @param {function} {callbacks.function} [after] executed after request
+	 * @param {function} [callbacks.after] executed after request
 	 * @param {Object} [ajaxRequest] requestServer function won't fire new request if ajaxRequest is still pending.
 	 * Instance of jqXHR
 	 * @param {Object} [options]
@@ -150,7 +150,7 @@ hangman = (function($) {
      * @param {function} [callbacks.before] executed before request
      * @param {function} callbacks.success executed on success, accepts response data
      * @param {function} [callbacks.failure] executed on failure, accepts error message
-     * @param {function} {callbacks.function} [after] executed after request
+     * @param {function} [callbacks.after] executed after request
 	 */
 	fn.guess = function(value, callbacks) {
 		if (!isValidGuess(value)) throw new Error('illegal argument');
@@ -199,7 +199,7 @@ hangman = (function($) {
      * @param {function} [callbacks.before] executed before request
      * @param {function} callbacks.success executed on success, accepts response data
      * @param {function} [callbacks.failure] executed on failure, accepts error message
-     * @param {function} {callbacks.function} [after] executed after request
+     * @param {function} [callbacks.after] executed after request
 	 */
 	fn.newGame = function(allowedIncorrectGuessesNo, category, callbacks) {
 		if ($.type(allowedIncorrectGuessesNo) !== 'number') throw new Error('illegal argument');
@@ -239,7 +239,7 @@ hangman = (function($) {
      * @param {function} [callbacks.before] executed before request
      * @param {function} callbacks.success executed on success, accepts response data
      * @param {function} [callbacks.failure] executed on failure, accepts error message
-     * @param {function} {callbacks.function} [after] executed after request
+     * @param {function} [callbacks.after] executed after request
 	 */
 	fn.load = function(token, callbacks) {
 		if ($.type(token) !== 'string') throw new Error('illegal argument');
