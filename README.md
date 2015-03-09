@@ -1,26 +1,31 @@
 # Hangman Game
 
-Implementation of popular guessing game in Java. Application is built as a web-app on top of [Spring Boot]
-and [MapDB] embedded database engine.
+Implementation of popular guessing game in Java. Application is built as a web-app on top of [Spring Boot] and [MapDB] embedded database engine.
 
 Example screenshot:
 
-
 <img src="screenshot.png" style="width:800px;"/>
 
+## Features
+
+* Implementation in Java 8
+* Game state is persisted between restarts in [MapDB] database
+* Game state is protected from read-modify-write race conditions
+* Interaction between browser and server takes place using Ajax requests
+
 ## Requirements
+
  * JDK8
  * JAVA_HOME variable pointing to active java directory
 
 ## Running the App
-
 
 * If gradle is installed execute following command:
 
   `$ gradle bootRun`
 
 
-* If gradle is not installed, on *nix OS, execute following command:
+* If gradle is not installed, on Linux OS, execute following command:
 
   `$ ./gradlew bootRun`
 
@@ -34,8 +39,7 @@ Then point your browser at [http://localhost:8080]
 ## How to play
 
 #### Starting a new game
-
-Click any of the top options
+Click any of the top options:
 * New Game - Animals
 * New Game - Fruits
 * New Game - Vegetables
@@ -51,6 +55,8 @@ The project uses:
 * [Spring MVC]
 * [Spring Hateoas]
 * [MapDB]
+* [Apache Commons]
+* [Guava]
 * [Gradle]
 * [Thymeleaf]
 * [jQuery]
@@ -58,16 +64,12 @@ The project uses:
 * [MultithreadedTC]
 * [Mockito]
 
-
-
-
-
 ## Tested on:
 
-* firefox
-* chrome
-* opera
-* IE
+* Firefox
+* Chrome
+* Opera
+* IE 8+
 
 
 
@@ -75,6 +77,8 @@ The project uses:
 [Spring MVC]:http://projects.spring.io/spring-framework/
 [Spring Hateoas]:http://projects.spring.io/spring-hateoas
 [MapDB]:http://www.mapdb.org
+[Apache Commons]:http://commons.apache.org
+[Guava]:https://github.com/google/guava
 [Gradle]:https://gradle.org
 [Thymeleaf]:http://www.thymeleaf.org
 [jQuery]:http://jquery.com
