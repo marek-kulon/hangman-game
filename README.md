@@ -62,15 +62,15 @@ The project uses
 * [MultithreadedTC]
 * [Mockito]
 
-## What’s Happening Under Hood
+## What’s happening under the hood
 
 #### Server-side
 
-The main class, performing all user actions, is hangman.core.Game. Game contains reference to immutable hangman.core.state.GameState which is a minimum data set required by outer layers of the system to fully visualize game and allow for interaction with the user. Every user action successfully performed on Game changes its current game state.
+The main class, performing all user actions, is [Game]. [Game] contains reference to immutable [GameState] which is a minimum data set required by outer layers of the system to fully visualize game and allow for interaction with the user. Every user action successfully performed on [Game] changes its current game state.
 
 Game state consist of secret word, allowed number of incorrect guesses and guesses made by user. This information is persisted in database as one object. Described architecture allows for great horizontal scalability.
 
-Most outer layer of back-end is a restful-ish hangman.web.GameController. For communication between Game, GameController and system repositories (game repository and secret repository) responsible is hangman.core.GameService, more precisely hangman.core.GameServiceThreadSafeImpl, which additionally protects code from race conditions that may occasionally occur.
+Most outer layer of back-end is a restful-ish [GameController]. For communication between [Game], [GameController] and system repositories ([GameStateRepository] and [SecretRepository]) responsible is [GameService], more precisely [GameServiceThreadSafeImpl], which additionally protects code from race conditions that may occasionally occur.
 
 #### Front-end
 
@@ -99,3 +99,10 @@ For interaction between user and back-end responsible is hangman.js library.
 [MultithreadedTC]:http://www.cs.umd.edu/projects/PL/multithreadedtc
 [Mockito]:http://mockito.org
 [http://localhost:8080]:http://localhost:8080
+[Game]:src/main/java/hangman/core/Game.java
+[GameState]:src/main/java/hangman/core/state/GameState.java
+[GameController]:src/main/java/hangman/web/GameController.java
+[GameService]:src/main/java/hangman/core/GameService.java
+[GameStateRepository]:src/main/java/hangman/core/state/repository/GameStateRepository.java
+[SecretRepository]:src/main/java/hangman/core/secret/repository/SecretRepository.java
+[GameServiceThreadSafeImpl]:src/main/java/hangman/core/GameServiceThreadSafeImpl.java
