@@ -42,7 +42,7 @@ hangman = (function($) {
     "use strict";
 	
     /**
-     * Send request to server
+     * Sends request to server
      * Function uses passed ajaxRequest object to prevent parallel requests
      *
      * @param {string} url request url
@@ -143,7 +143,7 @@ hangman = (function($) {
 
 
     /**
-     * Execute a guess. Operation is ignored if game is not loaded/game is finished/another request is pending
+     * Executes a guess. Operation is ignored if game is not loaded/game is finished/another request is pending
      *
      * @param {string} value guess received from user
      * @param {Object} callbacks
@@ -191,7 +191,7 @@ hangman = (function($) {
 
 
     /**
-     * Generate new game. Operation is ignored if another request is pending
+     * Generates new game. Operation is ignored if another request is pending
      *
      * @param {number} allowedIncorrectGuessesNo number of allowed incorrect guesses user can make before losing game
      * @param {string} category category of the game (eg animals, movies)
@@ -232,7 +232,7 @@ hangman = (function($) {
     };
 
     /**
-     * Load data based on token. Operation is ignored if another request is pending
+     * Loads data based on token. Operation is ignored if another request is pending
      *
      * @param {string} token
      * @param {Object} callbacks
@@ -265,7 +265,7 @@ hangman = (function($) {
 
 
     /**
-     * Abort all pending operations ( = abort ajax request)
+     * Aborts all pending operations ( = abort ajax request)
      */
     fn.abortAllOperations = function() {
         ajaxRequest && ajaxRequest.abort();
@@ -364,7 +364,7 @@ hangman = (function($) {
         },
 
         /**
-         * Check if letter is still available for guessing
+         * Checks if letter is still available for guessing
          *
          * @param {string} letter the candidate letter
          */
