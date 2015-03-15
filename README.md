@@ -9,12 +9,12 @@ Implementation of popular guessing game in Java. Application is built as a web-a
 * Implementation in Java 8
 * Game state is persisted between restarts in [MapDB] database
 * Game state is protected from read-modify-write race conditions
-* Interaction between browser and server takes place using Ajax requests
+* Ajax communication between browser and server
 
 ## Requirements
 
  * JDK8
- * JAVA_HOME variable pointing to active java directory
+ * JAVA_HOME variable pointing to active Java directory
 
 ## Running the App
 
@@ -37,7 +37,7 @@ Then point your browser at [http://localhost:8080]
 ## How to play
 
 #### Starting a new game
-Click any of the top options
+Click one of the top options
 * New Game - Animals
 * New Game - Fruits
 * New Game - Vegetables
@@ -66,15 +66,26 @@ The project uses
 
 #### Server-side
 
-The main class, performing all user actions, is [Game]. [Game] contains reference to immutable [GameState] which is a minimum data set required by outer layers of the system to fully visualize game and allow for interaction with the user. Every user action successfully performed on [Game] changes its current game state.
+The main class performing all user actions is [Game]. [Game] contains reference to immutable [GameState] which is a minimum data set required to visualize game, interact with the user and determine its result. Every user action successfully performed on [Game] moves it to another state.
 
-Game state consist of secret word, allowed number of incorrect guesses and guesses made by user. This information is persisted in database as one object. Described architecture allows for great horizontal scalability.
+Game state consists of secret word, allowed number of incorrect guesses and guesses made by user.
+All that information is persisted in repository as one entity. Benefit of described approach is ease of horizontal scaling.
 
-Most outer layer of back-end is a restful-ish [GameController]. For communication between [Game], [GameController] and system repositories ([GameStateRepository] and [SecretRepository]) responsible is [GameService], more precisely [GameServiceThreadSafeImpl], which additionally protects code from race conditions that may occasionally occur.
+System stores data in two repositories: containing all game state data [GameStateRepositoryMapDbFile] and
+[SecretRepositoryJsonFile] storing guess secrets.
+
+Most outer layer of back-end is a restful-ish [GameController]. For communication between [Game], [GameController]
+and system repositories responsible is [GameService]. Its  implementation, [GameServiceThreadSafeImpl], additionally protects code
+from race conditions.
 
 #### Front-end
 
-For interaction between user and back-end responsible is hangman.js library.
+For communication between browser and server responsible is JavaScript [hangman.js] library. Three most important functions are:
+* `newGame` - starts new game,
+* `guess` - performs guess action,
+* `load` - loads data from server based on game token.
+
+Each of these calls `requestServer` to update game state which is accessible through any of `state` functions. Game state on browsers site is protected against simultaneous modifications by aborting any new `requestServer` operation if one is already taking place.
 
 
 ## Tested on:
@@ -103,6 +114,7 @@ For interaction between user and back-end responsible is hangman.js library.
 [GameState]:src/main/java/hangman/core/state/GameState.java
 [GameController]:src/main/java/hangman/web/GameController.java
 [GameService]:src/main/java/hangman/core/GameService.java
-[GameStateRepository]:src/main/java/hangman/core/state/repository/GameStateRepository.java
-[SecretRepository]:src/main/java/hangman/core/secret/repository/SecretRepository.java
+[GameStateRepositoryMapDbFile]:src/main/java/hangman/core/state/repository/file/mapdb/GameStateRepositoryMapDbFile.java
+[SecretRepositoryJsonFile]:src/main/java/hangman/core/secret/repository/file/json/SecretRepositoryJsonFile.java
 [GameServiceThreadSafeImpl]:src/main/java/hangman/core/GameServiceThreadSafeImpl.java
+[hangman.js]:src/main/resources/static/javascript/hangman.js
