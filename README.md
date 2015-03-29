@@ -69,7 +69,7 @@ The project uses
 The main class performing all user actions is [Game]. [Game] contains reference to immutable [GameState] which is a minimum data set required to visualize game, interact with the user and determine its result. Every user action successfully performed on [Game] moves it to another state.
 
 Game state consists of secret word, allowed number of incorrect guesses and guesses made by user.
-All that information is persisted in repository as one entity. Benefit of described approach is ease of horizontal scaling.
+All that information is persisted in repository as one entity which easies horizontal scaling.
 
 System stores data in two repositories: containing all game state data [GameStateRepositoryMapDbFile] and
 [SecretRepositoryJsonFile] storing guess secrets.
